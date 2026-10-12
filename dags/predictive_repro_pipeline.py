@@ -39,10 +39,10 @@ with DAG(
     }
 ) as dag:
 
-    # 1. Ingest
+# 1. Ingest
     ingest_source = BashOperator(
         task_id='ingest_source',
-        bash_command='python /opt/airflow/src/ingest.py --mode {{ params.ingestion_mode }}',
+        bash_command='cd /opt/airflow && python src/ingest.py --mode {{ params.ingestion_mode }}',
         execution_timeout=timedelta(minutes=5), # Execution timeout control
         on_failure_callback=log_failure_callback,
         env={"PIPELINE_RUN_ID": "{{ run_id }}"} # Consistent run identifier
@@ -54,19 +54,25 @@ with DAG(
     # 3 & 4. Transform Staging and Build Curated
     transform_staging = BashOperator(
         task_id='transform_staging',
-        bash_command='python /opt/airflow/src/transform.py',
+        bash_command='cd /opt/airflow && python src/transform.py',
         on_failure_callback=log_failure_callback,
         env={"PIPELINE_RUN_ID": "{{ run_id }}"}
     )
     
-    build_curated = EmptyOperator(task_id='build_curated') # Handled jointly in transform.py for now
+    build_curated = EmptyOperator(task_id='build_curated')
 
     # 5. Load PostgreSQL
     load_postgres = BashOperator(
         task_id='load_postgres',
-        bash_command='python /opt/airflow/src/storage.py',
+        bash_command='cd /opt/airflow && python src/storage.py',
         on_failure_callback=log_failure_callback,
-        env={"PIPELINE_RUN_ID": "{{ run_id }}"}
+        env={
+            "PIPELINE_RUN_ID": "{{ run_id }}",
+            "POSTGRES_HOST": "postgres",
+            "POSTGRES_USER": "airflow",
+            "POSTGRES_PASSWORD": "airflow",
+            "POSTGRES_DB": "airflow"
+        }
     )
 
     # 6. Validate Curated (Placeholder for Milestone 08)

@@ -2,7 +2,7 @@ version: '3.8'
 
 x-airflow-common:
   &airflow-common
-  image: apache/airflow:2.8.1-python3.10
+  build: .
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
@@ -16,6 +16,9 @@ x-airflow-common:
     - ./logs:/opt/airflow/logs
     - ./data:/opt/airflow/data
     - ./config:/opt/airflow/config
+    - ./metadata:/opt/airflow/metadata
+    - ./.env:/opt/airflow/.env
+    - ./sql:/opt/airflow/sql
   depends_on:
     postgres:
       condition: service_healthy
@@ -50,7 +53,7 @@ services:
     <<: *airflow-common
     command: webserver
     ports:
-      - "8080:8080"
+      - "8081:8080"
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
       interval: 10s

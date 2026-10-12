@@ -32,6 +32,10 @@ def load_to_postgres():
         
     print(f"Reading curated data from {curated_path}...")
     df = pd.read_parquet(curated_path)
+    
+    # Drop the sneaky Pandas index column if it exists
+    df = df.drop(columns=['Unnamed: 0'], errors='ignore')
+    
     engine = get_db_engine()
     
     print("Applying PostgreSQL schema (Rerun-Safe)...")
@@ -45,7 +49,7 @@ def load_to_postgres():
     print(f"Loading {len(df)} records into PostgreSQL...")
     df.to_sql('curated_spotify_tracks', engine, if_exists='append', index=False)
     print("Database load completed successfully.")
-
+    
 def measure_read_time(func, times=5):
     """Executes a read function multiple times and returns the median duration."""
     read_times = []
