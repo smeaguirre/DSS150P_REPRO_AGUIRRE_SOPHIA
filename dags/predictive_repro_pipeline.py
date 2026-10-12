@@ -39,7 +39,7 @@ with DAG(
     }
 ) as dag:
 
-# 1. Ingest
+    # 1. Ingest
     ingest_source = BashOperator(
         task_id='ingest_source',
         bash_command='cd /opt/airflow && python src/ingest.py --mode {{ params.ingestion_mode }}',
@@ -48,8 +48,13 @@ with DAG(
         env={"PIPELINE_RUN_ID": "{{ run_id }}"} # Consistent run identifier
     )
 
-    # 2. Validate Raw (Placeholder for Milestone 08)
-    validate_raw = EmptyOperator(task_id='validate_raw')
+    # 2. Validate Raw 
+    validate_raw = BashOperator(
+        task_id='validate_raw',
+        bash_command='cd /opt/airflow && python src/validate.py',
+        on_failure_callback=log_failure_callback,
+        env={"PIPELINE_RUN_ID": "{{ run_id }}"}
+    )
 
     # 3 & 4. Transform Staging and Build Curated
     transform_staging = BashOperator(
@@ -75,7 +80,7 @@ with DAG(
         }
     )
 
-    # 6. Validate Curated (Placeholder for Milestone 08)
+    # 6. Validate Curated
     validate_curated = EmptyOperator(task_id='validate_curated')
 
     # 7. Train Model (Placeholder for Milestone 09)
