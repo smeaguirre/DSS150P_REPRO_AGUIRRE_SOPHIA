@@ -1,0 +1,11 @@
+paths:
+  source_dir: "data/source"
+  raw_dir: "data/raw"
+  staging_dir: "data/staging"
+  curated_dir: "data/curated"
+  metadata_dir: "metadata"
+  
+ingestion:
+  source_filename: "dataset.csv" # Ensure your file in data/source/ is named this
+  raw_filename: "raw_spotify_data.parquet"
+  watermark_file: "metadata/ingest_watermark.json"
