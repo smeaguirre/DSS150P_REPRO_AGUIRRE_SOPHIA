@@ -1,0 +1,29 @@
+# .gitignore
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Data and Artifacts
+data/
+*.csv
+*.json
+*.parquet
+*.db
+*.sqlite3
+metrics.json
+
+# Airflow logs
+logs/
+
+# OS specific
+.DS_Store
+Thumbs.db
