@@ -83,12 +83,34 @@ with DAG(
     # 6. Validate Curated
     validate_curated = EmptyOperator(task_id='validate_curated')
 
-    # 7. Train Model (Placeholder for Milestone 09)
-    train_model = EmptyOperator(task_id='train_model')
+    # 7. Train Model
+    train_model = BashOperator(
+        task_id='train_model',
+        bash_command='cd /opt/airflow && python src/train.py',
+        on_failure_callback=log_failure_callback,
+        env={
+            "PIPELINE_RUN_ID": "{{ run_id }}",
+            "POSTGRES_HOST": "postgres",
+            "POSTGRES_USER": "airflow",
+            "POSTGRES_PASSWORD": "airflow",
+            "POSTGRES_DB": "airflow"
+        }
+    )
 
-    # 8. Evaluate Model (Placeholder for Milestone 09)
-    evaluate_model = EmptyOperator(task_id='evaluate_model')
-
+    # 8. Evaluate Model
+    evaluate_model = BashOperator(
+        task_id='evaluate_model',
+        bash_command='cd /opt/airflow && python src/evaluate.py',
+        on_failure_callback=log_failure_callback,
+        env={
+            "PIPELINE_RUN_ID": "{{ run_id }}",
+            "POSTGRES_HOST": "postgres",
+            "POSTGRES_USER": "airflow",
+            "POSTGRES_PASSWORD": "airflow",
+            "POSTGRES_DB": "airflow"
+        }
+    )
+    
     # 9. Reproducibility Check (Placeholder for Milestone 09)
     reproducibility_check = EmptyOperator(task_id='reproducibility_check')
 

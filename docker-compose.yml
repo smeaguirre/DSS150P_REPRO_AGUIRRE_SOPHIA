@@ -19,6 +19,8 @@ x-airflow-common:
     - ./metadata:/opt/airflow/metadata
     - ./.env:/opt/airflow/.env
     - ./sql:/opt/airflow/sql
+    - ./outputs:/opt/airflow/outputs
+
   depends_on:
     postgres:
       condition: service_healthy

@@ -1,0 +1,5 @@
+{
+    "accuracy": 0.7144528638288389,
+    "model_type": "XGBoost",
+    "test_samples": 35896
+}
