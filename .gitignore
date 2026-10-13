@@ -30,3 +30,7 @@ outputs/predictions.csv
 !evidence/**
 !sample_outputs/
 !sample_outputs/**
+
+# Exclude generated large artifacts from evidence
+evidence/benchmark.json
+evidence/benchmark.csv
