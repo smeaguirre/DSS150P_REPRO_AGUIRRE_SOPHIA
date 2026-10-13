@@ -1,0 +1,9 @@
+{
+  "timestamp_utc": "2026-10-13T05:28:06.389954+00:00",
+  "partition_column": "explicit",
+  "total_curated_rows": 89740,
+  "explicit_false_rows": 82036,
+  "explicit_true_rows": 7704,
+  "sum_matches_curated_total": true,
+  "independent_partition_read_verified": true
+}

@@ -1,0 +1,30 @@
+{
+  "timestamp_utc": "2026-10-13T05:28:41.759160+00:00",
+  "regimes": {
+    "1_prior_group_notebook_undeduplicated_114k": {
+      "total_rows": 114000,
+      "train_rows": 91200,
+      "test_rows": 22800,
+      "leaked_overlapping_track_ids_in_test": 6327,
+      "ablation_accuracy": 0.622632,
+      "historical_reported_accuracy": 0.7145,
+      "explanation": "Cross-genre duplicate track_id rows in the 114k dataset leak identical songs across train and test."
+    },
+    "2_pre_patch_pipeline_2x_append_bug_179k": {
+      "total_rows": 179480,
+      "train_rows": 143584,
+      "test_rows": 35896,
+      "leaked_overlapping_track_ids_in_test": 28644,
+      "ablation_accuracy": 0.634973,
+      "explanation": "Appending to PostgreSQL without a primary key doubled rows to 179,480 and leaked identical songs into test."
+    },
+    "3_engineered_deduplicated_pipeline_89k": {
+      "total_rows": 89740,
+      "train_rows": 71792,
+      "test_rows": 17948,
+      "leaked_overlapping_track_ids_in_test": 0,
+      "reproduced_accuracy": 0.624861,
+      "explanation": "True leakage-free holdout accuracy after deduplicating track_id and fitting StandardScaler on train only."
+    }
+  }
+}

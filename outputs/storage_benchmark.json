@@ -1,0 +1,33 @@
+{
+  "timestamp_utc": "2026-10-13T05:28:30.899637+00:00",
+  "results": [
+    {
+      "Format": "CSV",
+      "Logical_Rows": 89740,
+      "Size_MB": 41.24,
+      "Write_Sec": 13.9639,
+      "Read_Sec": 1.9048
+    },
+    {
+      "Format": "JSON",
+      "Logical_Rows": 89740,
+      "Size_MB": 81.46,
+      "Write_Sec": 1.9974,
+      "Read_Sec": 3.4061
+    },
+    {
+      "Format": "Parquet",
+      "Logical_Rows": 89740,
+      "Size_MB": 10.27,
+      "Write_Sec": 1.3014,
+      "Read_Sec": 0.5775
+    },
+    {
+      "Format": "PostgreSQL",
+      "Logical_Rows": 89740,
+      "Size_MB": 104.78,
+      "Write_Sec": 3.42,
+      "Read_Sec": 0.64
+    }
+  ]
+}
