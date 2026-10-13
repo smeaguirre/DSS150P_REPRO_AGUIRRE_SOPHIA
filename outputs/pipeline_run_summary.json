@@ -1,6 +1,6 @@
 {
-  "updated_at_utc": "2026-10-13T04:40:42.033530+00:00",
-  "pipeline_run_id": "local_run",
+  "updated_at_utc": "2026-10-13T05:10:23.140425+00:00",
+  "pipeline_run_id": "manual__2026-10-13T05:02:51+00:00",
   "status": "SUCCESS",
   "counts": {
     "raw": 114000,

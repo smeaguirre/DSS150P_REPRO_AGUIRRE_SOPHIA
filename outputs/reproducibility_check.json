@@ -1,6 +1,6 @@
 {
-  "checked_at_utc": "2026-10-13T04:25:32.512431+00:00",
-  "pipeline_run_id": null,
+  "checked_at_utc": "2026-10-13T05:10:42.931159+00:00",
+  "pipeline_run_id": "manual__2026-10-13T05:02:51+00:00",
   "passed": true,
   "live_audit": {
     "logged_accuracy": 0.6248607087140629,

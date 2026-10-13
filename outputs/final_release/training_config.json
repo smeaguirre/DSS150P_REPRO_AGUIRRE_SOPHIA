@@ -29,5 +29,5 @@
   "train_track_ids_sha256": "33e97f9c669666377e6370381ea85d3bf373d39908ffdadeb36d183659e8f8b6",
   "xgboost_version": "3.2.0",
   "pandas_version": "2.1.4",
-  "pipeline_run_id": null
+  "pipeline_run_id": "manual__2026-10-13T05:02:51+00:00"
 }

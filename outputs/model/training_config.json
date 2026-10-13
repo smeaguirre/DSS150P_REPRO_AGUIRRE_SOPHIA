@@ -1,0 +1,33 @@
+{
+  "random_state": 42,
+  "xgboost_params": {
+    "n_estimators": 100,
+    "max_depth": 6,
+    "n_jobs": 1,
+    "eval_metric": "mlogloss"
+  },
+  "features": [
+    "scaled_danceability",
+    "scaled_energy",
+    "scaled_valence",
+    "scaled_acousticness",
+    "scaled_liveness",
+    "scaled_loudness",
+    "scaled_tempo",
+    "scaled_key",
+    "scaled_mode",
+    "scaled_time_signature",
+    "scaled_instrumentalness",
+    "scaled_speechiness"
+  ],
+  "classes": [
+    "High",
+    "Low",
+    "Mid"
+  ],
+  "train_samples": 71792,
+  "train_track_ids_sha256": "33e97f9c669666377e6370381ea85d3bf373d39908ffdadeb36d183659e8f8b6",
+  "xgboost_version": "3.2.0",
+  "pandas_version": "2.1.4",
+  "pipeline_run_id": "manual__2026-10-13T05:02:51+00:00"
+}
