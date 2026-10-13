@@ -17,8 +17,12 @@ database:
   curated_table: "curated_spotify_tracks"
 
 model:
+  type: "random_forest"      
   random_state: 42
   test_size: 0.2
+  random_forest:
+    n_estimators: 100
+    n_jobs: 1
   xgboost:
     n_estimators: 100
     max_depth: 6

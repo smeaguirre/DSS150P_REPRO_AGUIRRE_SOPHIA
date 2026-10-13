@@ -1,42 +1,37 @@
 {
     "project": "Spotify Track Popularity Reproducibility Pipeline",
     "status": "SUCCESS",
-    "published_at_utc": "2026-10-13T12:09:16.706754+00:00",
+    "published_at_utc": "2026-10-13T13:09:10.257121+00:00",
     "pipeline_run_id": null,
     "pipeline_version": "1.0.0",
     "summary": {
-        "model_type": "XGBoost",
-        "accuracy": 0.6248607087140629,
-        "macro_f1": 0.42748917659096936,
+        "model_type": "RandomForest",
+        "accuracy": 0.6462001337196345,
+        "macro_f1": 0.45619674020375006,
         "test_samples": 17948,
         "train_samples": 71792,
         "random_state": 42
     },
     "files": {
-        "model": {
-            "file": "xgboost_model.json",
-            "sha256": "0d27defa0eabf1c5fa7bd0972461dd07be68eef9675625ce716b7b3a2f6951ff",
-            "bytes": 1963334
-        },
         "training_config": {
             "file": "training_config.json",
-            "sha256": "6d53ba1958e77471a423956056538154dbe39f620773212c07583380eda535d1",
-            "bytes": 710
+            "sha256": "9fadd5840fcbcf115a8a8efe2a0313ec216d8bdb8d259e9f5e8796fa73e91a0c",
+            "bytes": 799
         },
         "metrics": {
             "file": "metrics.json",
-            "sha256": "08314ddbdb2fd0091e9718694dca2d02014fc8414f0785d290063145dd48b6a1",
-            "bytes": 1271
+            "sha256": "04ec8c11d1cb24c329e4f6f50def665719a9d2abfcad87828e6302a37aa09aff",
+            "bytes": 1363
         },
         "predictions": {
             "file": "predictions.csv",
-            "sha256": "0b11c54a9f74b7dc74ecfb7dce2327681a3ff65ca12370bb57dc9a3de593740b",
-            "bytes": 557325
+            "sha256": "294df3fd37d33399697effcd2491a689e2432bf4a9a9b8eb9659322709a98f37",
+            "bytes": 575369
         },
         "reproducibility_report": {
             "file": "reproducibility_check.json",
-            "sha256": "f04dd404957d2e0dc9d6c89eab0aa540756d220b1730a71eba0bba995ec5dfc9",
-            "bytes": 962
+            "sha256": "2a768646dbfa3b96463d9255fe4e14cdc85efabb6c12ddf3ce69cebf434aa81c",
+            "bytes": 1011
         },
         "split_manifest": {
             "file": "split_manifest.json",
@@ -48,5 +43,12 @@
             "sha256": "582e90734b9efb6b6c79a0f5b43655b65cb27bcb0e526a055799e84d84480778",
             "bytes": 735
         }
+    },
+    "model": {
+        "file": "random_forest_model.joblib",
+        "sha256": "008cf7fcc42412a872476f3fcbd8933d532206dd533e3781cb30fa8e5f8b5a85",
+        "bytes": 47874429,
+        "included_in_release": false,
+        "reason": "Model is too large to commit; regenerate with `python -m src.cli train`."
     }
 }

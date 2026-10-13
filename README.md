@@ -35,7 +35,7 @@ This repository implements a containerized, deterministic, end-to-end data engin
 4. **Staging (`data/staging/staging_spotify_tracks.parquet`):** Cleaned and deduplicated dataset (89,740 unique `track_id` rows) with `_staged_at` and `_staging_row_id`.
 5. **Curated (`data/curated/curated_{train,test,full}.parquet`):** Model-ready layer containing discretized `popularity_tier`, deterministic `split` assignment (`71,792 train` / `17,948 test`), and 12 `scaled_*` audio features fit strictly on the training split.
 6. **Relational Target (`curated_spotify_tracks` in PostgreSQL):** Primary-key enforced (`track_id PRIMARY KEY`) table loaded via transactional staging upsert (`INSERT ... ON CONFLICT DO UPDATE`).
-7. **Outputs & Release (`outputs/` & `outputs/final_release/`):** Trained model (`outputs/model/xgboost_model.json`), training metadata (`training_config.json`), holdout predictions (`outputs/predictions.csv`), evaluation metrics (`outputs/metrics.json`), audit report (`outputs/reproducibility_check.json`), and SHA-256 release bundle (`outputs/final_release/manifest.json`).
+7. **Outputs & Release (`outputs/` & `outputs/final_release/`):** Trained model (`outputs/model/random_forest_model.joblib`), training metadata (`training_config.json`), holdout predictions (`outputs/predictions.csv`), evaluation metrics (`outputs/metrics.json`), audit report (`outputs/reproducibility_check.json`), and SHA-256 release bundle (`outputs/final_release/manifest.json`).
 
 ## 3. Prerequisites & Clean-Machine Setup
 * **Docker Desktop** (with Docker Compose v2)

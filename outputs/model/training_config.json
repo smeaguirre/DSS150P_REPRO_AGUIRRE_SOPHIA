@@ -1,11 +1,11 @@
 {
-  "random_state": 42,
-  "xgboost_params": {
+  "model_type": "random_forest",
+  "model_file": "random_forest_model.joblib",
+  "model_params": {
     "n_estimators": 100,
-    "max_depth": 6,
-    "n_jobs": 1,
-    "eval_metric": "mlogloss"
+    "n_jobs": 1
   },
+  "random_state": 42,
   "features": [
     "scaled_danceability",
     "scaled_energy",
@@ -28,6 +28,7 @@
   "train_samples": 71792,
   "train_track_ids_sha256": "33e97f9c669666377e6370381ea85d3bf373d39908ffdadeb36d183659e8f8b6",
   "xgboost_version": "3.2.0",
+  "sklearn_version": "1.7.2",
   "pandas_version": "2.1.4",
   "pipeline_run_id": null
 }

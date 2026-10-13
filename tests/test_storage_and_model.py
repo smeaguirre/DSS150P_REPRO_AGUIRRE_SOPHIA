@@ -79,3 +79,9 @@ def test_reproducibility_check_pass_fail_and_pending(workdir):
     _write_expected(None)
     with pytest.raises(ValueError, match="not set"):
         evaluate_mod.check_reproducibility()
+
+def test_random_forest_track_trains_and_evaluates(loaded_db):
+    train_mod.train_random_forest()
+    metrics, _ = evaluate_mod.evaluate_model()
+    assert metrics["model_type"] == "RandomForest"
+    assert 0.0 <= metrics["accuracy"] <= 1.0

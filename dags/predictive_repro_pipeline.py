@@ -23,7 +23,7 @@ with DAG(
     'predictive_repro_pipeline',
     default_args=default_args,
     description='End-to-End Orchestration for Spotify Ablation Study',
-    schedule_interval=None,
+    schedule=None,
     start_date=datetime(2026, 1, 1),
     catchup=False,
     tags=['dss150p', 'reproducibility'],

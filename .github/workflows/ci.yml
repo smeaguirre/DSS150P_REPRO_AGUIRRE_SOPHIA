@@ -24,8 +24,8 @@ jobs:
           mkdir -p data/source
           echo "track_id,popularity,danceability,energy,valence,acousticness,liveness,loudness,tempo,key,mode,time_signature,instrumentalness,speechiness,track_genre" > data/source/dataset.csv
           echo "1,50,0.5,0.5,0.5,0.5,0.5,-5.0,120,5,1,4,0.0,0.0,pop" >> data/source/dataset.csv
-          pip install -r requirements.txt
-          pip install pytest apache-airflow scikit-learn pandas xgboost sqlalchemy psycopg2-binary
+          pip install "apache-airflow==2.8.1" -r requirements.txt --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.8.1/constraints-3.10.txt"
+          pip install pytest scikit-learn pandas xgboost sqlalchemy psycopg2-binary
       - run: pytest -v
         env:
           TEST_DATABASE_URL: postgresql+psycopg2://airflow:airflow@localhost:5432/spotify_test

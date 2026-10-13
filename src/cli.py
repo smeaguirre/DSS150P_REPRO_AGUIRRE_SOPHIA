@@ -4,7 +4,7 @@ from src.ingest import run_ingestion
 from src.publish import publish_pipeline_outputs
 from src.reproducibility_check import verify_reproducibility
 from src.storage import load_to_postgres, run_partitioning, run_storage_benchmark
-from src.train import train_xgboost
+from src.train import train_model
 from src.transform import build_curated, transform_staging
 from src.validate import validate_data
 from src.evidence import generate_all_evidence
@@ -21,7 +21,7 @@ def main():
     if args.step in ("transform", "all"): transform_staging(); build_curated()
     if args.step in ("load", "all"): load_to_postgres(full_refresh=args.full_refresh)
     if args.step in ("validate-curated", "all"): validate_data(stage="curated")
-    if args.step in ("train", "all"): train_xgboost()
+    if args.step in ("train", "all"): train_model()
     if args.step in ("evaluate", "all"): evaluate_model()
     if args.step in ("audit", "all"): verify_reproducibility()
     if args.step in ("publish", "all"): publish_pipeline_outputs()

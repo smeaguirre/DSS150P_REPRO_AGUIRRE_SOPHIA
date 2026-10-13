@@ -2,6 +2,8 @@ import os
 import json
 import xgboost
 import pandas as pd
+import joblib
+import sklearn
 from xgboost import XGBClassifier
 from sklearn.metrics import (
     accuracy_score, balanced_accuracy_score, f1_score,
@@ -23,6 +25,17 @@ def score_test_split(model, X_test, y_test):
         "macro_f1": float(f1_score(y_test, y_pred, average="macro")),
         "weighted_f1": float(f1_score(y_test, y_pred, average="weighted")),
     }
+
+MODEL_LABELS = {"random_forest": "RandomForest", "xgboost": "XGBoost"}
+
+def _load_model(model_dir, training_config):
+    model_type = training_config.get("model_type", "xgboost")
+    path = os.path.join(model_dir, training_config.get("model_file", "xgboost_model.json"))
+    if model_type == "random_forest":
+        return joblib.load(path)
+    model = XGBClassifier()
+    model.load_model(path)
+    return model
 
 def run_evaluation(engine=None):
     config = load_config()
@@ -48,8 +61,7 @@ def run_evaluation(engine=None):
         raise RuntimeError("Test split contains labels the model was not trained on.")
     y_test = y_test.astype(int)
 
-    model = XGBClassifier()
-    model.load_model(os.path.join(model_dir, "xgboost_model.json"))
+    model = _load_model(model_dir, training_config)
 
     print("Making predictions on the holdout test set...")
     y_pred = model.predict(X_test)
@@ -61,7 +73,8 @@ def run_evaluation(engine=None):
     print(classification_report(y_test, y_pred, target_names=classes))
 
     metrics = {
-        "model_type": "XGBoost",
+        "model_type": MODEL_LABELS.get(training_config.get("model_type", "xgboost"), "XGBoost"),
+        "sklearn_version": sklearn.__version__,
         "primary_metric": "accuracy",
         "accuracy": float(accuracy),
         "balanced_accuracy": float(balanced_accuracy_score(y_test, y_pred)),

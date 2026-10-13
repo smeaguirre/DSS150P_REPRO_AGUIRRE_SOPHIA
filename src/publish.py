@@ -19,8 +19,13 @@ def publish_pipeline_outputs():
     model_dir, outputs_dir = paths["model_dir"], paths["outputs_dir"]
     release_dir = paths.get("release_dir", os.path.join(outputs_dir, "final_release"))
 
+    with open(os.path.join(model_dir, "training_config.json"), "r") as f:
+        training_config = json.load(f)
+    model_file = training_config.get("model_file", "xgboost_model.json")
+    ship_model = training_config.get("model_type", "xgboost") != "random_forest"
+
     artifacts = {
-        "model": os.path.join(model_dir, "xgboost_model.json"),
+        "model": os.path.join(model_dir, model_file),
         "training_config": os.path.join(model_dir, "training_config.json"),
         "metrics": repro["metrics_file"],
         "predictions": os.path.join(outputs_dir, "predictions.csv"),
@@ -33,6 +38,13 @@ def publish_pipeline_outputs():
     missing = [name for name, path in artifacts.items() if not os.path.exists(path)]
     if missing:
         raise FileNotFoundError(f"Missing artifacts for publishing: {missing}")
+
+    model_info = None
+    if not ship_model:
+        model_path = artifacts.pop("model")
+        model_info = {"file": model_file, "sha256": _sha256(model_path),
+                      "bytes": os.path.getsize(model_path), "included_in_release": False,
+                      "reason": "Model is too large to commit; regenerate with `python -m src.cli train`."}
 
     with open(artifacts["reproducibility_report"], "r") as f:
         report = json.load(f)
@@ -63,6 +75,10 @@ def publish_pipeline_outputs():
                     ("model_type", "accuracy", "macro_f1", "test_samples", "train_samples", "random_state")},
         "files": files,
     }
+
+    if model_info:
+        manifest["model"] = model_info
+
     with open(os.path.join(release_dir, "manifest.json"), "w") as f:
         json.dump(manifest, f, indent=4)
 

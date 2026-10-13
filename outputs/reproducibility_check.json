@@ -1,16 +1,17 @@
 {
-    "timestamp": "2026-10-13T11:46:44.142513+00:00",
+    "timestamp": "2026-10-13T13:08:40.337852+00:00",
     "status": "SUCCESS",
     "passed": true,
     "live_audit": {
-        "logged_accuracy": 0.6248607087140629,
-        "live_accuracy": 0.6248607087140629,
+        "logged_accuracy": 0.6462001337196345,
+        "live_accuracy": 0.6462001337196345,
+        "difference": 0.0,
         "passed": true
     },
     "baseline_check": {
         "expected_accuracy": 0.643,
-        "live_accuracy": 0.6248607087140629,
-        "difference": 0.018139,
+        "live_accuracy": 0.6462001337196345,
+        "difference": 0.0032,
         "tolerance": 0.05,
         "passed": true
     },
