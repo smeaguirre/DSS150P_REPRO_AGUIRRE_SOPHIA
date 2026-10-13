@@ -1,5 +1,5 @@
 name: Reproducibility CI
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -28,7 +28,14 @@ jobs:
           pip install pytest scikit-learn pandas xgboost sqlalchemy psycopg2-binary
       - run: |
           airflow db migrate
-          pytest -v
+          mkdir -p evidence
+          pytest -v | tee evidence/pytest_output.txt
         env:
           TEST_DATABASE_URL: postgresql+psycopg2://airflow:airflow@localhost:5432/spotify_test
           AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      - name: Upload test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-evidence
+          path: evidence/pytest_output.txt
