@@ -1,7 +1,7 @@
 {
   "pipeline_run_id": "local_run",
   "start_time_utc": "2026-10-13T05:18:51.530469+00:00",
-  "end_time_utc": "2026-10-13T07:18:43.058288+00:00",
+  "end_time_utc": "2026-10-13T07:55:26.037041+00:00",
   "last_validated_stage": "validate_curated",
   "status": "SUCCESS",
   "counts": {

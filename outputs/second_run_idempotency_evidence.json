@@ -1,5 +1,5 @@
 {
-  "timestamp_utc": "2026-10-13T07:22:35.404535+00:00",
+  "timestamp_utc": "2026-10-13T07:59:23.015686+00:00",
   "table_name": "curated_spotify_tracks",
   "postgres_table_size_mb": 104.8,
   "before_load_rows": 89740,

@@ -8,7 +8,7 @@
   },
   "historical_notebook_baseline": {
     "accuracy": 0.7145,
-    "explanation": "Unexplained Baseline Deviation: ROC-AUC (~0.74) is a candidate for the historical metric, but strict accuracy is ~0.62. The 0.7145 figure remains unexplained. Instructor approval pending."
+    "explanation": "Unexplained Baseline Deviation: Strict multiclass accuracy yields ~0.62. Sweeping ROC-AUC yields ~0.74. The exact 0.7145 figure remains unexplained. Instructor approval requested (see docs/instructor_approval.md)."
   },
   "baseline_source": "Deduplicated leakage-free holdout evaluation (89,740 unique track_ids: 71,792 train / 17,948 test). Verified via ablation study in outputs/ablation_study.json."
 }

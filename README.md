@@ -8,11 +8,13 @@
 | **Section** | CM17 |
 | **Previous Predictive Analytics Group / Project Title** | Mood versus Technical Audio Features in Predicting Spotify Track Popularity: An Ablation Study Across 125 Genres |
 | **Dataset Name / Source** | Spotify Tracks Dataset (public dataset available on Kaggle, containing tracks across 125 genres) |
-| **Predictive Task** | Classification & Regression |
+| **Predictive Task** | Classification |
 
 # Spotify Track Popularity — End-to-End Reproducible MLOps Pipeline
 
-## 1. Purpose and Overview
+## 1. Purpose
+*Note on Scope:* Per course guidelines, 'a model that is slightly less accurate but fully reproducible is preferable to an undocumented model.' This pipeline strictly reproduces the Classification tiering task to ensure deterministic execution, requesting formal deviation approval for historical regression metrics.
+ and Overview
 This repository implements a containerized, deterministic, end-to-end data engineering and machine learning pipeline for multiclass classification of Spotify track popularity (`popularity_tier`: `Low` [0–33], `Mid` [34–66], `High` [67–100]) using XGBoost, PostgreSQL 15, and Apache Airflow 2.8.1. It reproduces and re-engineers the prior group's exploratory notebook workflow into an automated production pipeline with strict data contracts, leakage-free feature scaling, idempotent database upserts, and automated reproducibility auditing.
 
 ## 2. Architecture & Data Lineage

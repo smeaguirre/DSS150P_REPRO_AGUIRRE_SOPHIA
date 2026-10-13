@@ -6,7 +6,7 @@
   "downstream_blocked": true,
   "status": "RECOVERABLE_FAILURE_CAPTURED",
   "recovery_verification": {
-    "recovery_timestamp_utc": "2026-10-13T07:18:43.032355+00:00",
+    "recovery_timestamp_utc": "2026-10-13T07:55:26.018536+00:00",
     "stage": "validate_curated",
     "rows_validated": 89740,
     "assertions_verified": 5,

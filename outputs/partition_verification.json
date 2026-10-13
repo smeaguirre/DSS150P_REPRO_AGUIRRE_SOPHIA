@@ -1,7 +1,8 @@
 {
   "partition_column": "popularity_tier",
   "total_curated_rows": 89740,
+  "low_tier_rows": 45159,
   "mid_tier_rows": 40061,
   "high_tier_rows": 4520,
-  "independent_partition_read_verified": false
+  "independent_partition_read_verified": true
 }

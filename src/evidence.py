@@ -97,14 +97,16 @@ def generate_all_evidence():
     part_dir = "data/partitioned"
     if os.path.exists(part_dir): shutil.rmtree(part_dir)
     cur_df.to_parquet(part_dir, partition_cols=["popularity_tier"], index=False)
+    df_l = pd.read_parquet(os.path.join(part_dir, "popularity_tier=Low"))
     df_m = pd.read_parquet(os.path.join(part_dir, "popularity_tier=Mid"))
     df_h = pd.read_parquet(os.path.join(part_dir, "popularity_tier=High"))
     
-    sum_matches = (len(df_m) + len(df_h)) == len(cur_df)
+    sum_matches = (len(df_l) + len(df_m) + len(df_h)) == len(cur_df)
     with open("outputs/partition_verification.json", "w", encoding="utf-8") as f:
         json.dump({
             "partition_column": "popularity_tier",
             "total_curated_rows": int(len(cur_df)),
+            "low_tier_rows": int(len(df_l)),
             "mid_tier_rows": int(len(df_m)),
             "high_tier_rows": int(len(df_h)),
             "independent_partition_read_verified": bool(sum_matches)
@@ -117,7 +119,7 @@ def generate_all_evidence():
     
     for fmt, fname in [("CSV", "b.csv"), ("JSON", "b.json"), ("Parquet", "b.parquet")]:
         path = os.path.join(bench_dir, fname)
-        w_times, r_times = [], []
+        w_times, r_times = [] , []
         for _ in range(3):
             t0 = time.time()
             if fmt=="CSV": cur_df.to_csv(path, index=False)
