@@ -72,7 +72,7 @@ def run_ingestion(mode="full", force=False):
     now_ts = datetime.now(timezone.utc).isoformat()
 
     if mode == "full" or force or not os.path.exists(watermark_path) or not os.path.exists(raw_path):
-        df["_etl_loaded_at"] = now_ts
+        df["_etl_loaded_at"] = pd.Timestamp.now("UTC").tz_localize(None)
         df["_ingest_mode"] = mode
         df.to_parquet(raw_path, index=False)
         watermark = {
@@ -118,7 +118,7 @@ def run_ingestion(mode="full", force=False):
     end_row = int(batch_bounds[next_batch_idx])
 
     new_slice = df.iloc[last_row:end_row].copy()
-    new_slice["_etl_loaded_at"] = now_ts
+    new_slice["_etl_loaded_at"] = pd.Timestamp.now("UTC").tz_localize(None)
     new_slice["_ingest_mode"] = "incremental"
 
     existing_df = pd.read_parquet(raw_path)

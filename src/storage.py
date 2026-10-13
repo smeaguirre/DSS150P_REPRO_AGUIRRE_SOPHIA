@@ -41,6 +41,10 @@ def load_to_postgres(full_refresh=False, engine=None, curated_path=None):
 
     print(f"Reading curated data from {curated_path}...")
     df = pd.read_parquet(curated_path)
+    for ts_col in ("_etl_loaded_at", "_staged_at", "_curated_at"):
+        if ts_col in df.columns:
+            df[ts_col] = pd.to_datetime(df[ts_col], utc=True, errors="coerce").dt.tz_localize(None)
+
     df = df.drop(columns=['Unnamed: 0'], errors='ignore')
 
     if SPLIT_COL not in df.columns:
