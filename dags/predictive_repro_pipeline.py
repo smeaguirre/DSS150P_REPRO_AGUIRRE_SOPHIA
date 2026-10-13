@@ -18,6 +18,7 @@ def log_failure_callback(context):
     task_id = context.get('task_instance').task_id
     print(f"ALERT: Task {task_id} failed in DAG Run: {run_id}.")
 
+"""Rationale: schedule=None is used because this pipeline is manually triggered for deterministic reproducibility checks, not time-based scheduling."""
 with DAG(
     'predictive_repro_pipeline',
     default_args=default_args,

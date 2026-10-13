@@ -14,6 +14,7 @@ def _prep_source_and_contract(workdir):
     if os.path.exists(contract_src):
         shutil.copy2(contract_src, workdir / "metadata" / "data_contract.yml")
     df = pd.DataFrame({
+        "Unnamed: 0": range(400),
         "track_id": [f"trk{i:019d}" for i in range(400)],
         "popularity": [50] * 400, "duration_ms": [200000] * 400,
         "explicit": [False] * 400, "danceability": [0.5] * 400, "energy": [0.5] * 400,
@@ -99,6 +100,7 @@ def test_validate_enforces_all_five_contract_assertions_and_failure_injection(is
     assert res_cur["details"]["assertions_verified"] == 5
 
 def test_airflow_dag_has_ten_bash_operators_and_no_empty_operators():
+    pytest.importorskip('airflow')_and_no_empty_operators():
     dagbag = DagBag(dag_folder=os.path.join(REPO_ROOT, "dags"), include_examples=False)
     dag = dagbag.get_dag("predictive_repro_pipeline")
     assert dag is not None

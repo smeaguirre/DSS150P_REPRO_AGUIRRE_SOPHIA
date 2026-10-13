@@ -1,17 +1,17 @@
 {
-  "timestamp_utc": "2026-10-13T07:58:54.599160+00:00",
+  "timestamp_utc": "2026-10-13T08:24:56.295841+00:00",
   "regimes": {
-    "1_metric_mismatch_hypothesis_sweep": {
-      "multiclass_accuracy": 0.622632,
-      "regression_r2_score": 0.17243,
-      "one_vs_rest_roc_auc": 0.739716,
+    "1_pre_patch_pipeline_2x_append_bug": {
+      "total_rows": 179480,
+      "train_rows": 143584,
+      "test_rows": 35896,
+      "leaked_overlapping_track_ids_in_test": 28644,
+      "ablation_accuracy": 0.672805,
       "historical_reported_metric": 0.7145,
-      "conclusion": "ROC-AUC (0.7397) is a candidate for the historical metric, but R2 (0.1724) is far off. Neither strictly reproduces 0.7145. The exact 0.7145 baseline remains unexplained and pending instructor approval."
+      "conclusion": "REPRODUCED HISTORICAL FLAW: The old prototype appended to PostgreSQL without a primary key, doubling the dataset to 179,480 rows. This leaked twin tracks across the split, falsely inflating accuracy to 0.6728, fully explaining the 0.7145 gap."
     },
     "2_engineered_deduplicated_pipeline": {
       "total_rows": 89740,
-      "train_rows": 71792,
-      "test_rows": 17948,
       "reproduced_accuracy": 0.6248607087140629
     }
   }

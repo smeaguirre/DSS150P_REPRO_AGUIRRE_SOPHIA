@@ -76,7 +76,10 @@ def run_ingestion(mode: str = "full", force: bool = False) -> dict:
         raise FileNotFoundError(err)
 
     df = pd.read_csv(source_path)
-    df = df.drop(columns=["Unnamed: 0"], errors="ignore")
+    df = df.rename(columns={"Unnamed: 0": "source_row_id"}, errors="ignore")
+    df["pipeline_run_id"] = "dss150p_run"
+    df["source_file"] = "dataset.csv"
+    df["source_checksum"] = "b202fa49909b2d5cef71a04b1d21243cfeb36414535f2ca9272aa646721177bd"
     total_source_rows = len(df)
     manifest_info = verify_source_manifest(source_path, row_count=total_source_rows)
 
@@ -114,6 +117,7 @@ def run_ingestion(mode: str = "full", force: bool = False) -> dict:
     if not force and os.path.exists(watermark_path):
         with open(watermark_path, "r", encoding="utf-8") as f:
             wm = json.load(f)
+        if not os.path.exists(raw_path): wm = {} # Clean clone reset
 
     if force or not wm or wm.get("mode") != "incremental":
         if wm.get("mode") == "full" and not force:

@@ -5,42 +5,47 @@ rootdir: /opt/airflow
 configfile: pytest.ini
 testpaths: tests
 plugins: anyio-4.2.0, time-machine-2.13.0
-collecting ... collected 24 items
+collecting ... collected 13 items / 2 errors
 
-tests/test_audit_and_publish.py::test_audit_passes_when_artifacts_and_baseline_agree PASSED [  4%]
-tests/test_audit_and_publish.py::test_audit_detects_tampered_metrics_file PASSED [  8%]
-tests/test_audit_and_publish.py::test_audit_fails_when_result_differs_from_baseline PASSED [ 12%]
-tests/test_audit_and_publish.py::test_audit_errors_while_baseline_is_unset PASSED [ 16%]
-tests/test_audit_and_publish.py::test_publish_refuses_without_or_with_failed_audit PASSED [ 20%]
-tests/test_audit_and_publish.py::test_publish_builds_verifiable_bundle_and_is_rerun_safe PASSED [ 25%]
-tests/test_ingest_validate_dag.py::test_incremental_ingestion_runs_three_batches_and_is_idempotent PASSED [ 29%]
-tests/test_ingest_validate_dag.py::test_ingest_full_guard_raises_error PASSED [ 33%]
-tests/test_ingest_validate_dag.py::test_source_manifest_detects_checksum_or_row_mismatch PASSED [ 37%]
-tests/test_ingest_validate_dag.py::test_validate_enforces_all_five_contract_assertions_and_failure_injection PASSED [ 41%]
-tests/test_ingest_validate_dag.py::test_airflow_dag_has_ten_bash_operators_and_no_empty_operators PASSED [ 45%]
-tests/test_storage_and_model.py::test_load_is_rerun_safe_and_matches_curated_file PASSED [ 50%]
-tests/test_storage_and_model.py::test_reload_updates_changed_rows_and_removes_stale_rows PASSED [ 54%]
-tests/test_storage_and_model.py::test_outdated_table_schema_is_rejected_with_clear_message PASSED [ 58%]
-tests/test_storage_and_model.py::test_read_split_sizes_match_manifest PASSED [ 62%]
-tests/test_storage_and_model.py::test_train_evaluate_end_to_end_is_deterministic PASSED [ 66%]
-tests/test_storage_and_model.py::test_evaluate_detects_database_out_of_sync_with_manifest PASSED [ 70%]
-tests/test_storage_and_model.py::test_reproducibility_check_pass_fail_and_pending PASSED [ 75%]
-tests/test_transform.py::test_discretize_popularity_boundaries PASSED    [ 79%]
-tests/test_transform.py::test_build_curated_split_has_no_overlap_and_is_sorted PASSED [ 83%]
-tests/test_transform.py::test_scaler_is_fit_on_train_only PASSED         [ 87%]
-tests/test_transform.py::test_build_curated_is_deterministic PASSED      [ 91%]
-tests/test_transform.py::test_build_curated_rejects_duplicate_track_ids PASSED [ 95%]
-tests/test_transform.py::test_seed_env_override_changes_split PASSED     [100%]
-
-=============================== warnings summary ===============================
-tests/test_audit_and_publish.py: 72 warnings
-tests/test_storage_and_model.py: 12 warnings
-  /home/airflow/.local/lib/python3.10/site-packages/sklearn/metrics/_classification.py:1731: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
-    _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
-
-tests/test_ingest_validate_dag.py::test_airflow_dag_has_ten_bash_operators_and_no_empty_operators
-  /opt/airflow/dags/predictive_repro_pipeline.py:21: RemovedInAirflow3Warning: Param `schedule_interval` is deprecated and will be removed in a future release. Please use `schedule` instead. 
-    with DAG(
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-======================= 24 passed, 85 warnings in 27.48s =======================
+==================================== ERRORS ====================================
+_______________ ERROR collecting tests/test_audit_and_publish.py _______________
+ImportError while importing test module '/opt/airflow/tests/test_audit_and_publish.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/usr/local/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/test_audit_and_publish.py:9: in <module>
+    import src.reproducibility_check as audit_mod
+src/reproducibility_check.py:3: in <module>
+    from src.evaluate import score_test_split
+E   ImportError: cannot import name 'score_test_split' from 'src.evaluate' (/opt/airflow/src/evaluate.py)
+______________ ERROR collecting tests/test_ingest_validate_dag.py ______________
+/home/airflow/.local/lib/python3.10/site-packages/_pytest/python.py:617: in _importtestmodule
+    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
+/home/airflow/.local/lib/python3.10/site-packages/_pytest/pathlib.py:567: in import_path
+    importlib.import_module(module_name)
+/usr/local/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+<frozen importlib._bootstrap>:1050: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1027: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1006: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:688: in _load_unlocked
+    ???
+/home/airflow/.local/lib/python3.10/site-packages/_pytest/assertion/rewrite.py:177: in exec_module
+    source_stat, co = _rewrite_test(fn, self.config)
+/home/airflow/.local/lib/python3.10/site-packages/_pytest/assertion/rewrite.py:359: in _rewrite_test
+    tree = ast.parse(source, filename=strfn)
+/usr/local/lib/python3.10/ast.py:50: in parse
+    return compile(source, filename, mode, flags,
+E     File "/opt/airflow/tests/test_ingest_validate_dag.py", line 103
+E       pytest.importorskip('airflow')_and_no_empty_operators():
+E                                     ^^^^^^^^^^^^^^^^^^^^^^^
+E   SyntaxError: invalid syntax
+=========================== short test summary info ============================
+ERROR tests/test_audit_and_publish.py
+ERROR tests/test_ingest_validate_dag.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!!
+============================== 2 errors in 2.46s ===============================
