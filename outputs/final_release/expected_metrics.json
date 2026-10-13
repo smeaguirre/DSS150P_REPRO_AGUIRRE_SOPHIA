@@ -1,21 +1,19 @@
 {
+  "primary_metric": "accuracy",
   "metrics": {
     "accuracy": 0.643,
-    "f1_macro": 0.456,
-    "r2_score": 0.236,
-    "rmse": 17.959
+    "macro_f1": 0.456
   },
-  "tolerances": {
-    "accuracy": 0.05,
-    "f1_macro": 0.05,
-    "r2_score": 0.05,
-    "rmse": 2.0
+  "tolerance": 0.01,
+  "baseline_source": "Aguaviva, Aguirre & Tolentino, 'Mood versus Technical Audio Features in Predicting Spotify Track Popularity', Table III (full-feature Random Forest classifier)",
+  "regression_baseline": {
+    "model": "RandomForestRegressor",
+    "rmse": 17.959,
+    "r2": 0.236
   },
   "historical_notebook_baseline": {
-    "model": "RandomForest (n_estimators=100, seed=42)",
-    "features": "12 Audio Features (Mood + Technical)",
-    "split": "80/20 Stratified",
+    "model": "RandomForestClassifier (n_estimators=100), 12 standardized audio features, stratified 80/20 split",
     "citation": "Aguaviva, Aguirre, Tolentino (2026). Mood versus Technical Audio Features.",
-    "explanation": "Matches within tolerance. The historical Random Forest classifier achieved 0.643. Our fully deterministic XGBoost pipeline achieves ~0.625, proving successful reproduction of the predictive signal."
+    "explanation": "Baseline values are the paper's reported results. Tolerance 0.01 reflects the paper's 3-decimal rounding and a different row order feeding the same stratified split."
   }
 }

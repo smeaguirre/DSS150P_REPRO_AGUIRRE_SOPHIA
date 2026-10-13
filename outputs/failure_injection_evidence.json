@@ -1,12 +1,12 @@
 {
-  "timestamp_utc": "2026-10-13T07:07:35.237498+00:00",
+  "timestamp_utc": "2026-10-13T16:32:34.676663+00:00",
   "stage": "validate_raw",
   "injected_fault": "Dropped required column 'danceability' on temporary in-memory copy",
   "caught_exception": "[Assertion 1 - Schema] Missing contract-required columns: ['danceability']",
   "downstream_blocked": true,
   "status": "RECOVERABLE_FAILURE_CAPTURED",
   "recovery_verification": {
-    "recovery_timestamp_utc": "2026-10-13T11:34:04.497651+00:00",
+    "recovery_timestamp_utc": "2026-10-13T16:46:07.436826+00:00",
     "stage": "validate_curated",
     "rows_validated": 89740,
     "assertions_verified": 5,

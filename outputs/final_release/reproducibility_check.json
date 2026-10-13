@@ -1,5 +1,5 @@
 {
-    "timestamp": "2026-10-13T13:08:40.337852+00:00",
+    "timestamp": "2026-10-13T16:48:07.589978+00:00",
     "status": "SUCCESS",
     "passed": true,
     "live_audit": {
@@ -12,14 +12,12 @@
         "expected_accuracy": 0.643,
         "live_accuracy": 0.6462001337196345,
         "difference": 0.0032,
-        "tolerance": 0.05,
+        "tolerance": 0.01,
         "passed": true
     },
     "historical_notebook_comparison": {
-        "model": "RandomForest (n_estimators=100, seed=42)",
-        "features": "12 Audio Features (Mood + Technical)",
-        "split": "80/20 Stratified",
+        "model": "RandomForestClassifier (n_estimators=100), 12 standardized audio features, stratified 80/20 split",
         "citation": "Aguaviva, Aguirre, Tolentino (2026). Mood versus Technical Audio Features.",
-        "explanation": "Matches within tolerance. The historical Random Forest classifier achieved 0.643. Our fully deterministic XGBoost pipeline achieves ~0.625, proving successful reproduction of the predictive signal."
+        "explanation": "Baseline values are the paper's reported results. Tolerance 0.01 reflects the paper's 3-decimal rounding and a different row order feeding the same stratified split."
     }
 }

@@ -1,11 +1,11 @@
 {
   "last_ingested_row": 114000,
   "total_source_rows": 114000,
-  "batches_completed": 3,
-  "total_batches": 3,
-  "mode": "incremental",
+  "batches_completed": 1,
+  "total_batches": 1,
+  "mode": "full",
   "source_checksum": "b202fa49909b2d5cef71a04b1d21243cfeb36414535f2ca9272aa646721177bd",
   "source_size_bytes": 20118244,
-  "pipeline_run_id": "local_run",
-  "updated_at_utc": "2026-10-13T11:46:58.884527+00:00"
+  "pipeline_run_id": "manual__2026-10-13T16:44:23+00:00",
+  "updated_at_utc": "2026-10-13T16:44:38.457516+00:00"
 }
