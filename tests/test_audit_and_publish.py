@@ -29,7 +29,7 @@ def test_audit_detects_tampered_metrics_file(loaded_db):
     metrics = _train_and_evaluate()
     tampered = dict(metrics, accuracy=metrics["accuracy"] + 0.05)
     json.dump(tampered, open("outputs/metrics.json", "w"))
-    json.dump({"primary_metric": "accuracy", "metrics": {"accuracy": tampered["accuracy"]},
+    json.dump({"primary_metric": "accuracy", "metrics": {"accuracy": metrics["accuracy"]},
                "tolerance": 0.01}, open("metadata/expected_metrics.json", "w"))
     report = audit_mod.verify_reproducibility()
     assert report["live_audit"]["passed"] is False and report["passed"] is False

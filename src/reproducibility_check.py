@@ -4,17 +4,28 @@ from datetime import datetime, timezone
 def verify_reproducibility():
     os.makedirs("outputs", exist_ok=True)
     
+    if not os.path.exists("metadata/expected_metrics.json"):
+        raise ValueError("Baseline is not set: expected_metrics.json missing")
+        
     with open("metadata/expected_metrics.json", "r", encoding="utf-8") as f:
         exp = json.load(f)
         
-    exp_acc = exp.get("metrics", {}).get("accuracy", 0.643)
+    exp_acc = exp.get("metrics", {}).get("accuracy")
+    if exp_acc is None:
+        raise ValueError("Baseline accuracy is not set")
+        
     tolerance = exp.get("tolerances", {}).get("accuracy", 0.05)
     
+    if not os.path.exists("outputs/metrics.json"):
+        raise ValueError("metrics.json is missing")
+        
     with open("outputs/metrics.json", "r", encoding="utf-8") as f:
         live_metrics = json.load(f)
         
-    live_acc = live_metrics.get("accuracy", 0.0)
-    
+    live_acc = live_metrics.get("accuracy")
+    if live_acc is None:
+        raise ValueError("Live accuracy is not set")
+        
     diff = abs(live_acc - exp_acc)
     passed = bool(diff <= tolerance)
 

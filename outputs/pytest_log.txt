@@ -10,7 +10,7 @@ collecting ... collected 24 items
 tests/test_audit_and_publish.py::test_audit_passes_when_artifacts_and_baseline_agree PASSED [  4%]
 tests/test_audit_and_publish.py::test_audit_detects_tampered_metrics_file FAILED [  8%]
 tests/test_audit_and_publish.py::test_audit_fails_when_result_differs_from_baseline PASSED [ 12%]
-tests/test_audit_and_publish.py::test_audit_errors_while_baseline_is_unset FAILED [ 16%]
+tests/test_audit_and_publish.py::test_audit_errors_while_baseline_is_unset PASSED [ 16%]
 tests/test_audit_and_publish.py::test_publish_refuses_without_or_with_failed_audit PASSED [ 20%]
 tests/test_audit_and_publish.py::test_publish_builds_verifiable_bundle_and_is_rerun_safe PASSED [ 25%]
 tests/test_ingest_validate_dag.py::test_incremental_ingestion_runs_three_batches_and_is_idempotent PASSED [ 29%]
@@ -37,66 +37,17 @@ ___________________ test_audit_detects_tampered_metrics_file ___________________
 
 loaded_db = Engine(postgresql+psycopg2://airflow:***@postgres:5432/spotify_test)
 
->   ???
-E   assert (True is False)
+    def test_audit_detects_tampered_metrics_file(loaded_db):
+        metrics = _train_and_evaluate()
+        tampered = dict(metrics, accuracy=metrics["accuracy"] + 0.05)
+        json.dump(tampered, open("outputs/metrics.json", "w"))
+        json.dump({"primary_metric": "accuracy", "metrics": {"accuracy": metrics["accuracy"]},
+                   "tolerance": 0.01}, open("metadata/expected_metrics.json", "w"))
+        report = audit_mod.verify_reproducibility()
+>       assert report["live_audit"]["passed"] is False and report["passed"] is False
+E       assert (True is False)
 
-C:\Users\Sofia\Documents\DSS150P_REPRO_AGUIRRE_SOPHIA\tests\test_audit_and_publish.py:35: AssertionError
----------------------------- Captured stdout setup -----------------------------
-Curated layers built successfully:
-  - Train: data/curated/curated_train.parquet (1200 rows)
-  - Test: data/curated/curated_test.parquet (300 rows)
-  - Manifest written to metadata/split_manifest.json
-Reading curated data from data/curated/curated_full.parquet...
-Staging 1500 records, then upserting into 'curated_spotify_tracks'...
-Database load completed: 1500 rows, 1500 distinct track_id.
------------------------------ Captured stdout call -----------------------------
-Connecting to PostgreSQL to fetch the TRAIN split...
-Loaded 1200 training rows. Preparing features...
-Training XGBoost Classifier (random_state=42, params={'n_estimators': 100, 'max_depth': 6, 'n_jobs': 1, 'eval_metric': 'mlogloss'})...
-Model + training_config.json saved to outputs/model/
-Fetching the TEST split from PostgreSQL...
-Making predictions on the holdout test set...
-
-=== EVALUATION RESULTS ===
-Accuracy: 0.5100
-              precision    recall  f1-score   support
-
-        High       0.00      0.00      0.00        15
-         Low       0.52      0.58      0.55       150
-         Mid       0.49      0.49      0.49       135
-
-    accuracy                           0.51       300
-   macro avg       0.34      0.36      0.35       300
-weighted avg       0.48      0.51      0.50       300
-
-Metrics saved to outputs/metrics.json; predictions saved to outputs/predictions.csv
-__________________ test_audit_errors_while_baseline_is_unset ___________________
-
-loaded_db = Engine(postgresql+psycopg2://airflow:***@postgres:5432/spotify_test)
-
->   ???
-
-C:\Users\Sofia\Documents\DSS150P_REPRO_AGUIRRE_SOPHIA\tests\test_audit_and_publish.py:46: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-    def verify_reproducibility():
-        os.makedirs("outputs", exist_ok=True)
-    
-        with open("metadata/expected_metrics.json", "r", encoding="utf-8") as f:
-            exp = json.load(f)
-    
-        exp_acc = exp.get("metrics", {}).get("accuracy", 0.643)
-        tolerance = exp.get("tolerances", {}).get("accuracy", 0.05)
-    
-        with open("outputs/metrics.json", "r", encoding="utf-8") as f:
-            live_metrics = json.load(f)
-    
-        live_acc = live_metrics.get("accuracy", 0.0)
-    
->       diff = abs(live_acc - exp_acc)
-E       TypeError: unsupported operand type(s) for -: 'float' and 'NoneType'
-
-/opt/airflow/src/reproducibility_check.py:18: TypeError
+/opt/airflow/tests/test_audit_and_publish.py:35: AssertionError
 ---------------------------- Captured stdout setup -----------------------------
 Curated layers built successfully:
   - Train: data/curated/curated_train.parquet (1200 rows)
@@ -139,5 +90,4 @@ tests/test_ingest_validate_dag.py::test_airflow_dag_has_ten_bash_operators_and_n
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
 =========================== short test summary info ============================
 FAILED tests/test_audit_and_publish.py::test_audit_detects_tampered_metrics_file
-FAILED tests/test_audit_and_publish.py::test_audit_errors_while_baseline_is_unset
-================== 2 failed, 22 passed, 49 warnings in 26.60s ==================
+================== 1 failed, 23 passed, 49 warnings in 31.68s ==================
