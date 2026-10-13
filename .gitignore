@@ -1,29 +1,29 @@
-# .gitignore
-# Environments
 .env
-.venv
+.venv/
 env/
 venv/
 ENV/
 
-# Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+.pytest_cache/
 
-# Data and Artifacts
-data/
-*.csv
-*.json
+data/*
+!data/*/
+data/*/*
+!data/*/.gitkeep
+
 *.parquet
 *.db
 *.sqlite3
-metrics.json
+*.pkl
+outputs/benchmark.*
+outputs/model/*
+!outputs/model/.gitkeep
 
-# Airflow logs
 logs/
 
-# OS specific
 .DS_Store
 Thumbs.db
