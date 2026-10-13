@@ -1,0 +1,62 @@
+{
+  "created_at": "2026-10-13T04:16:49.456550",
+  "random_state": 42,
+  "split_ratio": {
+    "train": 0.8,
+    "test": 0.2
+  },
+  "stratify_column": "popularity_tier",
+  "split_column": "split",
+  "row_order": "sorted by track_id",
+  "counts": {
+    "total_curated": 89740,
+    "train": 71792,
+    "test": 17948,
+    "train_class_distribution": {
+      "Low": 36127,
+      "Mid": 32049,
+      "High": 3616
+    },
+    "test_class_distribution": {
+      "Low": 9032,
+      "Mid": 8012,
+      "High": 904
+    }
+  },
+  "feature_sets": {
+    "mood_features": [
+      "danceability",
+      "energy",
+      "valence",
+      "acousticness",
+      "liveness"
+    ],
+    "technical_features": [
+      "loudness",
+      "tempo",
+      "key",
+      "mode",
+      "time_signature",
+      "instrumentalness",
+      "speechiness"
+    ],
+    "all_features": [
+      "danceability",
+      "energy",
+      "valence",
+      "acousticness",
+      "liveness",
+      "loudness",
+      "tempo",
+      "key",
+      "mode",
+      "time_signature",
+      "instrumentalness",
+      "speechiness"
+    ]
+  },
+  "checksums": {
+    "train_checksum": "76778ea02d1b362ae48fd4e0f9dbd73a",
+    "test_checksum": "af46e4e5f7ff0196c4aacfff8a114eb9"
+  }
+}

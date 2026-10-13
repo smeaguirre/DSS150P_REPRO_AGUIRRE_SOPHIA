@@ -1,0 +1,52 @@
+{
+    "project": "Spotify Track Popularity Reproducibility Pipeline",
+    "status": "SUCCESS",
+    "published_at_utc": "2026-10-13T04:25:35.841798+00:00",
+    "pipeline_run_id": null,
+    "pipeline_version": "1.0.0",
+    "summary": {
+        "model_type": "XGBoost",
+        "accuracy": 0.6248607087140629,
+        "macro_f1": 0.42748917659096936,
+        "test_samples": 17948,
+        "train_samples": 71792,
+        "random_state": 42
+    },
+    "files": {
+        "model": {
+            "file": "xgboost_model.json",
+            "sha256": "0d27defa0eabf1c5fa7bd0972461dd07be68eef9675625ce716b7b3a2f6951ff",
+            "bytes": 1963334
+        },
+        "training_config": {
+            "file": "training_config.json",
+            "sha256": "6d53ba1958e77471a423956056538154dbe39f620773212c07583380eda535d1",
+            "bytes": 710
+        },
+        "metrics": {
+            "file": "metrics.json",
+            "sha256": "08314ddbdb2fd0091e9718694dca2d02014fc8414f0785d290063145dd48b6a1",
+            "bytes": 1271
+        },
+        "predictions": {
+            "file": "predictions.csv",
+            "sha256": "0b11c54a9f74b7dc74ecfb7dce2327681a3ff65ca12370bb57dc9a3de593740b",
+            "bytes": 557325
+        },
+        "reproducibility_report": {
+            "file": "reproducibility_check.json",
+            "sha256": "0e84dab89503f145db36f93645a8d7073d8c1c818b1364e6f9b218ef11b2b9f8",
+            "bytes": 572
+        },
+        "split_manifest": {
+            "file": "split_manifest.json",
+            "sha256": "2dc615717a762ca7119e23a5cdc8258aa6bd5f3d9dc41c71b2cccfc5788b04c8",
+            "bytes": 1216
+        },
+        "expected_metrics": {
+            "file": "expected_metrics.json",
+            "sha256": "4ea1df8dee8c258144fa5a78a35d1114f278cc2ec986f56160186f2561798a63",
+            "bytes": 559
+        }
+    }
+}

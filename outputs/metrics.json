@@ -1,5 +1,55 @@
 {
-    "accuracy": 0.7144528638288389,
     "model_type": "XGBoost",
-    "test_samples": 35896
+    "primary_metric": "accuracy",
+    "accuracy": 0.6248607087140629,
+    "balanced_accuracy": 0.43854030502696434,
+    "macro_f1": 0.42748917659096936,
+    "weighted_f1": 0.6092155444755557,
+    "per_class": {
+        "High": {
+            "precision": 0.14285714285714285,
+            "recall": 0.0011061946902654867,
+            "f1-score": 0.0021953896816684962,
+            "support": 904.0
+        },
+        "Low": {
+            "precision": 0.6543169754089481,
+            "recall": 0.6687333923826395,
+            "f1-score": 0.6614466407490555,
+            "support": 9032.0
+        },
+        "Mid": {
+            "precision": 0.5940298507462687,
+            "recall": 0.645781328007988,
+            "f1-score": 0.618825499342184,
+            "support": 8012.0
+        }
+    },
+    "labels": [
+        "High",
+        "Low",
+        "Mid"
+    ],
+    "confusion_matrix": [
+        [
+            1,
+            356,
+            547
+        ],
+        [
+            3,
+            6040,
+            2989
+        ],
+        [
+            3,
+            2835,
+            5174
+        ]
+    ],
+    "test_samples": 17948,
+    "train_samples": 71792,
+    "random_state": 42,
+    "xgboost_version": "3.2.0",
+    "pipeline_run_id": null
 }

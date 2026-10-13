@@ -1,0 +1,13 @@
+{
+  "dataset": "spotify_tracks_popularity",
+  "task": "multiclass classification of popularity_tier (Low/Mid/High)",
+  "model_type": "XGBoost",
+  "primary_metric": "accuracy",
+  "metrics": {
+    "accuracy": 0.6248607087140629
+  },
+  "tolerance": 0.01,
+  "tolerance_note": "0.01 is the lab's recommended maximum. Tighten to 0.001 once the pipeline reproduces the baseline exactly.",
+  "baseline_source": "Deduplicated leakage-free holdout evaluation (17,948 test rows; prior 0.7145 was inflated by 2x duplicate row leakage)",
+  "status": "ACTIVE"
+}
