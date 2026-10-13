@@ -13,7 +13,7 @@ Because this project is submitted asynchronously without a live defense, this do
 | **7. Show PostgreSQL Target** | See `evidence/second_run_idempotency_evidence.json` (Shows `postgres_table_size_mb`). |
 | **8. Run Quality & Code Tests** | 25 passing Pytest integration tests documented explicitly in `evidence/pytest_output.txt`. |
 | **9. Show Airflow Graph** | See DAG structure test in `tests/test_ingest_validate_dag.py`. |
-| **10. Prove No Duplicates on Rerun** | Verified in `evidence/second_run_idempotency_evidence.json` (`idempotent_verified: true` and `net_row_delta: 0`). |` and `net_row_delta: 0`). |
+| **10. Prove No Duplicates on Rerun** | Verified in `evidence/second_run_idempotency_evidence.json` (`idempotent_verified: true` and `net_row_delta: 0`). |
 | **11. Side-by-Side Metrics** | Compared in `outputs/reproducibility_check.json` and explained rigorously in `outputs/ablation_study.json`. |
 | **12. Failure/Recovery Scenario** | Trace captured in `outputs/failure_injection_evidence.json` (Dropping `danceability` triggers Assertion 1). |
 | **13. Production Design Change** | See Questions 13 & 14 in `docs/reproducibility_report.md` (Proposal to replace in-memory Pandas staging with PySpark/Polars and PostgreSQL `COPY`). |
