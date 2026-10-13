@@ -112,3 +112,4 @@ with DAG(
 
     ingest_source >> validate_raw >> transform_staging >> build_curated >> load_postgres
     load_postgres >> validate_curated >> train_model >> evaluate_model >> reproducibility_check >> publish_outputs
+
