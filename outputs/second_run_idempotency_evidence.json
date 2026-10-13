@@ -1,9 +1,10 @@
 {
-  "timestamp_utc": "2026-10-13T07:03:13.557672+00:00",
+  "timestamp_utc": "2026-10-13T07:22:35.404535+00:00",
   "table_name": "curated_spotify_tracks",
+  "postgres_table_size_mb": 104.8,
   "before_load_rows": 89740,
   "after_second_load_rows": 89740,
-  "duplicate_keys_introduced": 0,
+  "duplicate_business_keys_introduced": 0,
   "net_row_delta": 0,
   "idempotent_verified": true
 }

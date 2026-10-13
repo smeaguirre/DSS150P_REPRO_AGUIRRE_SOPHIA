@@ -3,5 +3,5 @@
   "total_curated_rows": 89740,
   "mid_tier_rows": 40061,
   "high_tier_rows": 4520,
-  "independent_partition_read_verified": true
+  "independent_partition_read_verified": false
 }

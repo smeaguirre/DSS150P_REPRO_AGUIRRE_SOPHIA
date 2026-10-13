@@ -42,7 +42,7 @@ loaded_db = Engine(postgresql+psycopg2://airflow:***@postgres:5432/spotify_test)
         report = audit_mod.verify_reproducibility()
         assert report["passed"] is True
 >       assert report["live_audit"]["passed"] and report["baseline_check"]["passed"]
-E       KeyError: 'baseline_check'
+E       KeyError: 'live_audit'
 
 /opt/airflow/tests/test_audit_and_publish.py:25: KeyError
 ---------------------------- Captured stdout setup -----------------------------
@@ -86,9 +86,9 @@ loaded_db = Engine(postgresql+psycopg2://airflow:***@postgres:5432/spotify_test)
                    "tolerance": 0.01}, open("metadata/expected_metrics.json", "w"))
         report = audit_mod.verify_reproducibility()
 >       assert report["live_audit"]["passed"] is False and report["passed"] is False
-E       assert (True is False)
+E       KeyError: 'live_audit'
 
-/opt/airflow/tests/test_audit_and_publish.py:35: AssertionError
+/opt/airflow/tests/test_audit_and_publish.py:35: KeyError
 ---------------------------- Captured stdout setup -----------------------------
 Curated layers built successfully:
   - Train: data/curated/curated_train.parquet (1200 rows)
@@ -126,9 +126,9 @@ loaded_db = Engine(postgresql+psycopg2://airflow:***@postgres:5432/spotify_test)
         _train_and_evaluate(baseline_accuracy=0.99)
         report = audit_mod.verify_reproducibility()
 >       assert report["live_audit"]["passed"] is True
-E       assert False is True
+E       KeyError: 'live_audit'
 
-/opt/airflow/tests/test_audit_and_publish.py:40: AssertionError
+/opt/airflow/tests/test_audit_and_publish.py:40: KeyError
 ---------------------------- Captured stdout setup -----------------------------
 Curated layers built successfully:
   - Train: data/curated/curated_train.parquet (1200 rows)
@@ -170,9 +170,7 @@ loaded_db = Engine(postgresql+psycopg2://airflow:***@postgres:5432/spotify_test)
 /opt/airflow/tests/test_audit_and_publish.py:46: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-engine = None
-
-    def verify_reproducibility(engine=None) -> dict:
+    def verify_reproducibility():
         os.makedirs("outputs", exist_ok=True)
     
         with open("outputs/metrics.json", "r", encoding="utf-8") as f:
@@ -181,12 +179,13 @@ engine = None
         with open("metadata/expected_metrics.json", "r", encoding="utf-8") as f:
             exp_metrics = json.load(f)
     
-        exp_acc = exp_metrics.get("metrics", {}).get("accuracy", 0.6248607087140629)
-        live_acc = live_metrics.get("accuracy", exp_acc)
->       live_passed = bool(abs(live_acc - exp_acc) <= 1e-6)
+        exp_acc = exp_metrics.get("metrics", {}).get("accuracy", 0.624861)
+        live_acc = live_metrics.get("accuracy", 0.0)
+    
+>       diff = abs(live_acc - exp_acc)
 E       TypeError: unsupported operand type(s) for -: 'float' and 'NoneType'
 
-/opt/airflow/src/reproducibility_check.py:15: TypeError
+/opt/airflow/src/reproducibility_check.py:16: TypeError
 ---------------------------- Captured stdout setup -----------------------------
 Curated layers built successfully:
   - Train: data/curated/curated_train.parquet (1200 rows)
@@ -232,4 +231,4 @@ FAILED tests/test_audit_and_publish.py::test_audit_passes_when_artifacts_and_bas
 FAILED tests/test_audit_and_publish.py::test_audit_detects_tampered_metrics_file
 FAILED tests/test_audit_and_publish.py::test_audit_fails_when_result_differs_from_baseline
 FAILED tests/test_audit_and_publish.py::test_audit_errors_while_baseline_is_unset
-================== 4 failed, 20 passed, 49 warnings in 25.18s ==================
+================== 4 failed, 20 passed, 49 warnings in 26.30s ==================

@@ -8,7 +8,7 @@
   },
   "historical_notebook_baseline": {
     "accuracy": 0.7145,
-    "explanation": "Metric Mismatch: The historical 0.7145 score could not be reproduced using Multiclass Accuracy. Our ablation sweep (outputs/ablation_study.json) reveals that an XGBRegressor predicting raw popularity yields an R^2 of ~0.66-0.73, and One-vs-Rest ROC-AUC yields ~0.71-0.76. The prior notebook reported a different metric (Regression R^2 or ROC-AUC) rather than strict Accuracy on the 3 tiers."
+    "explanation": "Unexplained Baseline Deviation: ROC-AUC (~0.74) is a candidate for the historical metric, but strict accuracy is ~0.62. The 0.7145 figure remains unexplained. Instructor approval pending."
   },
   "baseline_source": "Deduplicated leakage-free holdout evaluation (89,740 unique track_ids: 71,792 train / 17,948 test). Verified via ablation study in outputs/ablation_study.json."
 }

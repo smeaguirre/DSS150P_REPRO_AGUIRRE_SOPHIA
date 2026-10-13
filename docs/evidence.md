@@ -15,7 +15,7 @@ Because this project is submitted asynchronously without a live defense, this do
 | **9. Show Airflow Graph** | See DAG structure test in `tests/test_ingest_validate_dag.py`. |
 | **10. Prove No Duplicates on Rerun** | Verified in `outputs/second_run_idempotency_evidence.json` (`idempotent_verified: true` and `net_row_delta: 0`). |
 | **11. Side-by-Side Metrics** | Compared in `outputs/reproducibility_check.json` and explained rigorously in `outputs/ablation_study.json`. |
-| **12. Failure/Recovery Scenario** | Trace captured in `outputs/failure_injection_evidence.json` (Dropping `danceability` triggers Assertion 1; immediately followed by successful recovery). |
+| **12. Failure/Recovery Scenario** | Trace captured in `outputs/failure_injection_evidence.json` (Dropping `danceability` triggers Assertion 1). |
 | **13. Production Design Change** | See Questions 13 & 14 in `docs/reproducibility_report.md` (Proposal to replace in-memory Pandas staging with PySpark/Polars and PostgreSQL `COPY`). |
 
 *Note: All dynamic JSON evidence artifacts above can be regenerated on a fresh clone by running `docker compose exec airflow-scheduler python -m src.cli evidence`.*
