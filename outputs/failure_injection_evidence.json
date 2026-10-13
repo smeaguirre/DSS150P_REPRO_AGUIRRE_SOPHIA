@@ -1,0 +1,8 @@
+{
+  "timestamp_utc": "2026-10-13T04:38:23.156117+00:00",
+  "stage": "validate_raw",
+  "injected_fault": "Dropped required column 'danceability' on temporary in-memory copy",
+  "caught_exception": "[Assertion 1 - Schema] Missing required columns: ['danceability']",
+  "downstream_blocked": true,
+  "status": "RECOVERABLE_FAILURE_CAPTURED"
+}

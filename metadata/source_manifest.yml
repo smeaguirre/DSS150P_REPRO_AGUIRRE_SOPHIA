@@ -1,11 +1,13 @@
 dataset_name: spotify_tracks_popularity
-version: "1.0"
-authoritative_source: "kaggle_spotify_tracks_dataset"
+version: '1.0'
+authoritative_source: kaggle_spotify_tracks_dataset
 files:
-  - filename: "dataset.csv"
-    relative_path: "data/source/dataset.csv"
-    expected_rows: 114000
-    expected_size_bytes: 20000000 # Approximate, update if needed
-    sha256_checksum: "REPLACE_WITH_ACTUAL_HASH"
-    delimiter: ","
-    encoding: "utf-8"
+- filename: dataset.csv
+  relative_path: data/source/dataset.csv
+  expected_rows: 114000
+  expected_size_bytes: 20000000
+  sha256_checksum: REPLACE_WITH_ACTUAL_HASH
+  delimiter: ','
+  encoding: utf-8
+sha256_checksum: b202fa49909b2d5cef71a04b1d21243cfeb36414535f2ca9272aa646721177bd
+file_size_bytes: 20118244

@@ -74,7 +74,12 @@ with DAG(
         env=task_env,
     )
 
-    validate_curated = EmptyOperator(task_id='validate_curated')
+    validate_curated = BashOperator(
+        task_id='validate_curated',
+        bash_command='cd /opt/airflow && python -m src.validate --stage curated',
+        on_failure_callback=log_failure_callback,
+        env=task_env,
+    )
 
     train_model = BashOperator(
         task_id='train_model',

@@ -1,0 +1,13 @@
+{
+  "updated_at_utc": "2026-10-13T04:40:42.033530+00:00",
+  "pipeline_run_id": "local_run",
+  "status": "SUCCESS",
+  "counts": {
+    "raw": 114000,
+    "staging": 89740,
+    "curated": 89740,
+    "train": 71792,
+    "test": 17948,
+    "predictions": 17948
+  }
+}
