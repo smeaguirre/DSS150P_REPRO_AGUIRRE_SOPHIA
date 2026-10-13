@@ -1,4 +1,10 @@
-﻿import ast, json, os, shutil, pandas as pd, pytest, yaml
+﻿import os
+import pytest
+
+pytest.importorskip("airflow")
+
+from airflow.models import DagBag
+import ast, json, os, shutil, pandas as pd, yaml
 from airflow.models import DagBag
 from src.ingest import run_ingestion, verify_source_manifest
 from src.transform import build_curated, transform_staging
