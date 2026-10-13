@@ -1,6 +1,6 @@
 import os
 import json
-import yaml
+import argparse
 import hashlib
 import numpy as np
 import pandas as pd
@@ -8,26 +8,17 @@ from datetime import datetime
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-MOOD_FEATURES = ['danceability', 'energy', 'valence', 'acousticness', 'liveness']
-TECHNICAL_FEATURES = ['loudness', 'tempo', 'key', 'mode', 'time_signature', 'instrumentalness', 'speechiness']
-ALL_AUDIO_FEATURES = MOOD_FEATURES + TECHNICAL_FEATURES
-
-def load_config(config_path="config/settings.yml"):
-    with open(config_path, "r") as f:
-        return yaml.safe_load(f)
+from src.config import (
+    MOOD_FEATURES, TECHNICAL_FEATURES, ALL_AUDIO_FEATURES,
+    KEY_COL, TARGET_COL, SPLIT_COL,
+    load_config, get_random_state,
+)
 
 def compute_checksum(df: pd.DataFrame) -> str:
-    """Computes an MD5 checksum over sorted serialized data to verify determinism."""
     serialized = df.to_json(orient='records', date_format='iso')
     return hashlib.md5(serialized.encode('utf-8')).hexdigest()
 
 def transform_staging():
-    """
-    Cleans raw ingested data:
-    1. Drops rows missing core metadata (114,000 -> 113,999)
-    2. Drops duplicate track_id occurrences (113,999 -> 89,740)
-    3. Adds audit lineage columns
-    """
     config = load_config()
     raw_path = os.path.join(config['paths']['raw_dir'], config['ingestion']['raw_filename'])
     staging_path = os.path.join(config['paths']['staging_dir'], "staging_spotify_tracks.parquet")
@@ -39,17 +30,14 @@ def transform_staging():
     df = pd.read_parquet(raw_path)
     initial_count = len(df)
 
-    # 1. Drop rows missing critical metadata
     df_clean = df.dropna(subset=['artists', 'album_name', 'track_name']).copy()
     post_null_count = len(df_clean)
     print(f"Dropped {initial_count - post_null_count} row(s) with missing metadata. Remaining: {post_null_count}")
 
-    # 2. Drop duplicate track_id entries (keep first occurrence)
     df_dedup = df_clean.drop_duplicates(subset=['track_id'], keep='first').copy()
     dedup_count = len(df_dedup)
     print(f"Dropped {post_null_count - dedup_count} duplicate track_id row(s). Remaining: {dedup_count}")
 
-    # 3. Add audit columns
     df_dedup['_staged_at'] = datetime.utcnow()
     df_dedup['_staging_row_id'] = np.arange(len(df_dedup))
 
@@ -65,15 +53,12 @@ def discretize_popularity(val: int) -> str:
         return "Mid"
     return "High"
 
-def build_curated(random_state=42):
-    """
-    Builds the model-ready dataset:
-    1. Discretizes popularity into Low, Mid, High tiers
-    2. Stratified 80/20 train/test split on popularity_tier
-    3. Fits StandardScaler ONLY on the train split to prevent leakage
-    4. Writes curated train/test files and split_manifest.json
-    """
+def build_curated(random_state=None):
     config = load_config()
+    if random_state is None:
+        random_state = get_random_state(config)
+    test_size = float(config.get("model", {}).get("test_size", 0.20))
+
     staging_path = os.path.join(config['paths']['staging_dir'], "staging_spotify_tracks.parquet")
     curated_dir = config['paths']['curated_dir']
     metadata_dir = config['paths']['metadata_dir']
@@ -83,21 +68,27 @@ def build_curated(random_state=42):
 
     df = pd.read_parquet(staging_path)
 
-    # 1. Target Construction
-    df['popularity_tier'] = df['popularity'].apply(discretize_popularity)
+    if not df[KEY_COL].is_unique:
+        dupes = int(df[KEY_COL].duplicated().sum())
+        raise ValueError(f"Staging data has {dupes} duplicate {KEY_COL} values; "
+                         f"re-run transform_staging before building curated.")
 
-    # 2. Stratified 80/20 Split
+    df[TARGET_COL] = df['popularity'].apply(discretize_popularity)
+
     train_df, test_df = train_test_split(
         df,
-        test_size=0.20,
+        test_size=test_size,
         random_state=random_state,
-        stratify=df['popularity_tier']
+        stratify=df[TARGET_COL]
     )
 
-    train_df = train_df.copy()
-    test_df = test_df.copy()
+    train_df = train_df.sort_values(KEY_COL).reset_index(drop=True)
+    test_df = test_df.sort_values(KEY_COL).reset_index(drop=True)
 
-    # 3. Fit scaler ONLY on train set to prevent leakage
+    overlap = set(train_df[KEY_COL]) & set(test_df[KEY_COL])
+    if overlap:
+        raise ValueError(f"Train/test leakage: {len(overlap)} {KEY_COL} values appear in both splits.")
+
     scaler = StandardScaler()
     scaled_train_features = scaler.fit_transform(train_df[ALL_AUDIO_FEATURES])
     scaled_test_features = scaler.transform(test_df[ALL_AUDIO_FEATURES])
@@ -106,9 +97,13 @@ def build_curated(random_state=42):
     train_scaled_df = pd.DataFrame(scaled_train_features, columns=scaled_col_names, index=train_df.index)
     test_scaled_df = pd.DataFrame(scaled_test_features, columns=scaled_col_names, index=test_df.index)
 
-    # Combine back metadata, targets, unscaled, and scaled features
     train_final = pd.concat([train_df, train_scaled_df], axis=1)
     test_final = pd.concat([test_df, test_scaled_df], axis=1)
+    train_final[SPLIT_COL] = "train"
+    test_final[SPLIT_COL] = "test"
+
+    full_final = (pd.concat([train_final, test_final])
+                  .sort_values(KEY_COL).reset_index(drop=True))
 
     os.makedirs(curated_dir, exist_ok=True)
     train_path = os.path.join(curated_dir, "curated_train.parquet")
@@ -117,20 +112,21 @@ def build_curated(random_state=42):
 
     train_final.to_parquet(train_path, index=False)
     test_final.to_parquet(test_path, index=False)
-    pd.concat([train_final, test_final]).to_parquet(full_curated_path, index=False)
+    full_final.to_parquet(full_curated_path, index=False)
 
-    # 4. Generate split_manifest.json for reproducibility audit
     manifest = {
         "created_at": datetime.utcnow().isoformat(),
         "random_state": random_state,
-        "split_ratio": {"train": 0.8, "test": 0.2},
-        "stratify_column": "popularity_tier",
+        "split_ratio": {"train": round(1 - test_size, 4), "test": test_size},
+        "stratify_column": TARGET_COL,
+        "split_column": SPLIT_COL,
+        "row_order": f"sorted by {KEY_COL}",
         "counts": {
             "total_curated": len(df),
             "train": len(train_final),
             "test": len(test_final),
-            "train_class_distribution": train_final['popularity_tier'].value_counts().to_dict(),
-            "test_class_distribution": test_final['popularity_tier'].value_counts().to_dict()
+            "train_class_distribution": train_final[TARGET_COL].value_counts().to_dict(),
+            "test_class_distribution": test_final[TARGET_COL].value_counts().to_dict()
         },
         "feature_sets": {
             "mood_features": MOOD_FEATURES,
@@ -138,8 +134,8 @@ def build_curated(random_state=42):
             "all_features": ALL_AUDIO_FEATURES
         },
         "checksums": {
-            "train_checksum": compute_checksum(train_final[['track_id', 'popularity']]),
-            "test_checksum": compute_checksum(test_final[['track_id', 'popularity']])
+            "train_checksum": compute_checksum(train_final[[KEY_COL, 'popularity']]),
+            "test_checksum": compute_checksum(test_final[[KEY_COL, 'popularity']])
         }
     }
 
@@ -153,5 +149,11 @@ def build_curated(random_state=42):
     print(f"  - Manifest written to {manifest_path}")
 
 if __name__ == "__main__":
-    transform_staging()
-    build_curated()
+    parser = argparse.ArgumentParser(description="Staging / curated transformations")
+    parser.add_argument("--stage", choices=["staging", "curated", "all"], default="all",
+                        help="Which transformation to run (default: all)")
+    args = parser.parse_args()
+    if args.stage in ("staging", "all"):
+        transform_staging()
+    if args.stage in ("curated", "all"):
+        build_curated()

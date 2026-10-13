@@ -1,7 +1,5 @@
-DROP TABLE IF EXISTS curated_spotify_tracks;
-
-CREATE TABLE curated_spotify_tracks (
-    track_id VARCHAR(255),
+CREATE TABLE IF NOT EXISTS curated_spotify_tracks (
+    track_id VARCHAR(255) PRIMARY KEY,
     artists TEXT,
     album_name TEXT,
     track_name TEXT,
@@ -21,15 +19,14 @@ CREATE TABLE curated_spotify_tracks (
     tempo FLOAT,
     time_signature INTEGER,
     track_genre VARCHAR(100),
-    
-    -- Audit & Pipeline Metadata Columns
+
     _etl_loaded_at TIMESTAMP,
     _ingest_mode VARCHAR(50),
     _staged_at TIMESTAMP,
     _staging_row_id INTEGER,
-    
-    -- Feature Engineered Columns
+
     popularity_tier VARCHAR(50),
+    split VARCHAR(10) NOT NULL CHECK (split IN ('train', 'test')),
     scaled_danceability FLOAT,
     scaled_energy FLOAT,
     scaled_valence FLOAT,
@@ -43,3 +40,5 @@ CREATE TABLE curated_spotify_tracks (
     scaled_instrumentalness FLOAT,
     scaled_speechiness FLOAT
 );
+
+CREATE INDEX IF NOT EXISTS idx_curated_split ON curated_spotify_tracks (split);

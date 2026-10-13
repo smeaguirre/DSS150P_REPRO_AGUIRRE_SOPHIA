@@ -4,8 +4,29 @@ paths:
   staging_dir: "data/staging"
   curated_dir: "data/curated"
   metadata_dir: "metadata"
-  
+  outputs_dir: "outputs"
+  model_dir: "outputs/model"
+  release_dir: "outputs/final_release"
+
 ingestion:
-  source_filename: "dataset.csv" # Ensure your file in data/source/ is named this
+  source_filename: "dataset.csv"
   raw_filename: "raw_spotify_data.parquet"
   watermark_file: "metadata/ingest_watermark.json"
+
+database:
+  curated_table: "curated_spotify_tracks"
+
+model:
+  random_state: 42
+  test_size: 0.2
+  xgboost:
+    n_estimators: 100
+    max_depth: 6
+    n_jobs: 1
+    eval_metric: "mlogloss"
+
+reproducibility:
+  expected_metrics_file: "metadata/expected_metrics.json"
+  metrics_file: "outputs/metrics.json"
+  check_report_file: "outputs/reproducibility_check.json"
+  audit_tolerance: 0.000001
