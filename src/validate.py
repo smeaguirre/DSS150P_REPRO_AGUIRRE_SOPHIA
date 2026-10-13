@@ -1,3 +1,4 @@
+from src.config import log_structured_event
 """YAML data-contract enforcement, 5 data-quality assertions, quarantine routing, and failure injection."""
 import argparse
 import json
@@ -8,25 +9,6 @@ from datetime import datetime, timezone
 import pandas as pd
 import yaml
 from src.config import ALL_AUDIO_FEATURES, KEY_COL, SPLIT_COL, TARGET_COL, load_config
-
-
-def log_event(stage: str, status: str, row_count: int, duration_sec: float, error: str | None = None, details: dict | None = None) -> dict:
-    """Append structured JSON validation event to outputs/structured_pipeline_logs.jsonl."""
-    entry = {
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-        "pipeline_run_id": os.getenv("PIPELINE_RUN_ID", "local_run"),
-        "stage": stage,
-        "status": status,
-        "row_count": int(row_count),
-        "duration_sec": round(duration_sec, 4),
-        "error": error,
-        "details": details or {},
-    }
-    print(json.dumps(entry))
-    os.makedirs("outputs", exist_ok=True)
-    with open("outputs/structured_pipeline_logs.jsonl", "a", encoding="utf-8") as f:
-        f.write(json.dumps(entry) + "\n")
-    return entry
 
 
 def load_contract() -> dict:
@@ -174,7 +156,7 @@ def validate_data(stage: str = "raw", inject_failure: bool = False) -> dict:
 
     if not os.path.exists(path):
         err = f"Missing dataset for validation at {path}"
-        log_event(f"validate_{stage}", "FAILED", 0, time.time() - start, error=err)
+        log_structured_event(f"validate_{stage}", "FAILED", 0, time.time() - start, error=err)
         raise FileNotFoundError(err)
 
     df = pd.read_parquet(path)
@@ -196,7 +178,7 @@ def validate_data(stage: str = "raw", inject_failure: bool = False) -> dict:
             os.makedirs("outputs", exist_ok=True)
             with open("outputs/failure_injection_evidence.json", "w", encoding="utf-8") as f:
                 json.dump(evidence, f, indent=2)
-        log_event(f"validate_{stage}", "FAILED", len(df), time.time() - start, error=str(exc))
+        log_structured_event(f"validate_{stage}", "FAILED", len(df), time.time() - start, error=str(exc))
         raise
 
     if os.path.exists("outputs/failure_injection_evidence.json"):
@@ -216,7 +198,7 @@ def validate_data(stage: str = "raw", inject_failure: bool = False) -> dict:
             pass
 
     write_pipeline_summary(config, stage=stage, start_iso=start_iso, status="SUCCESS")
-    return log_event(f"validate_{stage}", "SUCCESS", len(df), time.time() - start, details=details)
+    return log_structured_event(f"validate_{stage}", "SUCCESS", len(df), time.time() - start, details=details)
 
 
 if __name__ == "__main__":

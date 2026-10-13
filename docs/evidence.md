@@ -1,4 +1,4 @@
-﻿# Phase IV — Online Grading Evidence Map (Section 10.1)
+# Phase IV — Online Grading Evidence Map (Section 10.1)
 
 Because this project is submitted asynchronously without a live defense, this document maps the 13 required Phase IV demonstration steps directly to the committed code, automated test output, and generated JSON evidence artifacts within this repository.
 

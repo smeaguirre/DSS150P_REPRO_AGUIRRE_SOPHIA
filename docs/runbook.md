@@ -42,3 +42,12 @@ docker compose exec -e POSTGRES_HOST=postgres airflow-scheduler bash -c "python 
 
 ## 7. Automated Evidence Generation
 Running `python -m src.cli evidence` will regenerate all JSON evidence artifacts. **Note:** This command runs the incremental ingestion trace, which overwrites `data/raw/raw_spotify_data.parquet` and `metadata/ingest_watermark.json` as a side effect.
+
+
+## 8. Rollback & Cleanup
+* **Partial Failure:** If a DAG task fails, Airflow retries up to 3 times. PostgreSQL UPSERTs ensure no duplicates.
+* **Full Pipeline Reset:**
+  1. `docker compose down -v`
+  2. Delete all parquet files in `data/raw`, `data/staging`, `data/curated`, `data/partitioned`.
+  3. Echo `{}` > `metadata/ingest_watermark.json`
+  4. `docker compose up -d`

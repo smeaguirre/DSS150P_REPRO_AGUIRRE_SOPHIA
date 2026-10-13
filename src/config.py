@@ -47,3 +47,12 @@ def expected_split_size(split, config=None):
         return None
     with open(manifest_path, "r") as f:
         return json.load(f)["counts"][split]
+
+import json, os
+from datetime import datetime, timezone
+def log_structured_event(stage, status, row_count, duration_sec, details=None, error=None):
+    os.makedirs('outputs', exist_ok=True)
+    rec = {'timestamp': datetime.now(timezone.utc).isoformat(), 'pipeline_run_id': 'local_run', 'stage': stage, 'status': status, 'row_count': row_count, 'duration_sec': round(duration_sec, 4), 'error': error, 'details': details or {}}
+    with open('outputs/structured_pipeline_logs.jsonl', 'a', encoding='utf-8') as f:
+        f.write(json.dumps(rec) + '\n')
+    return rec

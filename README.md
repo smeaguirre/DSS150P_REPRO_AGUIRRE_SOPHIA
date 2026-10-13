@@ -8,7 +8,7 @@
 | **Section** | CM17 |
 | **Previous Predictive Analytics Group / Project Title** | Mood versus Technical Audio Features in Predicting Spotify Track Popularity: An Ablation Study Across 125 Genres |
 | **Dataset Name / Source** | Spotify Tracks Dataset (public dataset available on Kaggle, containing tracks across 125 genres) |
-| **Predictive Task** | Classification & Regression |
+| **Predictive Task** | Classification |
 
 # Spotify Track Popularity — End-to-End Reproducible MLOps Pipeline
 
@@ -102,3 +102,11 @@ This pipeline re-engineers the exploratory Spotify Track Popularity classificati
 
 ## 8. Academic Integrity & AI Use Acknowledgment
 In accordance with the DSS150P syllabus policy, AI assistance was used for code review, debugging duplicate-row data leakage, and designing the automated ablation study. All code, SQL queries, data contracts, ablation regimes, and tests were executed and verified by the author.
+
+
+## Expected Results & Troubleshooting
+* **Expected Metrics:** Multiclass Accuracy ~0.625 (tolerance 0.05 vs historical 0.643). Macro-F1 ~0.43.
+* **Expected Row Counts:** 114,000 raw -> 89,740 curated -> 71,792 train / 17,948 test.
+* **Verification:** Run `python -m src.ingest --verify-only` to check the dataset checksum.
+* **Troubleshooting:** If ingestion fails, clear `data/raw/` and reset `metadata/ingest_watermark.json`. See `docs/runbook.md` for full recovery steps.
+* **Note on ignored files:** `metrics.json` and `predictions.csv` are gitignored in the root folder because they are dynamically generated. Immutable published copies are committed inside `outputs/final_release/`.

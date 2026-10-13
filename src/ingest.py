@@ -117,6 +117,7 @@ def run_ingestion(mode: str = "full", force: bool = False) -> dict:
     if not force and os.path.exists(watermark_path):
         with open(watermark_path, "r", encoding="utf-8") as f:
             wm = json.load(f)
+        if not os.path.exists(raw_path): wm = {} # clean clone fix
         if not os.path.exists(raw_path): wm = {} # Clean clone reset
 
     if force or not wm or wm.get("mode") != "incremental":

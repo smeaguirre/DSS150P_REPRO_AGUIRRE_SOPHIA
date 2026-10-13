@@ -1,4 +1,4 @@
-﻿import argparse
+import argparse
 from src.evaluate import evaluate_model
 from src.ingest import run_ingestion
 from src.publish import publish_pipeline_outputs
