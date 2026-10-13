@@ -10,7 +10,6 @@ def load_config(config_path="config/settings.yml"):
         return yaml.safe_load(f)
 
 def read_watermark(watermark_path):
-    """Reads the last ingested index row to support simulated incremental loads."""
     if os.path.exists(watermark_path):
         with open(watermark_path, "r") as f:
             data = json.load(f)
@@ -18,7 +17,6 @@ def read_watermark(watermark_path):
     return -1
 
 def write_watermark(watermark_path, latest_index):
-    """Saves the maximum index ingested to the watermark file."""
     with open(watermark_path, "w") as f:
         json.dump({"last_ingested_index": int(latest_index)}, f)
 
@@ -43,15 +41,12 @@ def ingest_data(mode="full"):
             print("No new records to ingest.")
             return
 
-    # Add Audit / Lineage Columns
     df['_etl_loaded_at'] = datetime.utcnow()
     df['_ingest_mode'] = mode
 
-    # Prevent Duplicates on Incremental Appends
     if mode == "incremental" and os.path.exists(raw_path):
         existing_df = pd.read_parquet(raw_path)
         combined_df = pd.concat([existing_df, df])
-        # Deduplicate based on the raw primary key (Unnamed: 0)
         combined_df = combined_df.sort_values('_etl_loaded_at').drop_duplicates(
             subset=['Unnamed: 0'], keep='last'
         )
@@ -59,10 +54,8 @@ def ingest_data(mode="full"):
     else:
         final_df = df
 
-    # Save to Raw (Parquet format for type safety and compression)
     final_df.to_parquet(raw_path, index=False)
     
-    # Update Watermark
     max_index = final_df['Unnamed: 0'].max()
     write_watermark(watermark_path, max_index)
     

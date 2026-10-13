@@ -16,7 +16,6 @@ def validate_raw_data():
     
     print("Running Data Quality Contracts...")
     
-    # Check 1: Primary Key must not be null
     null_ids = df['track_id'].isnull().sum()
     check_1 = (null_ids == 0)
     if not check_1:
@@ -24,7 +23,6 @@ def validate_raw_data():
     else:
         print("✅ PASS: 'track_id' has no nulls.")
         
-    # Check 2: Popularity must be a valid percentage (0-100)
     out_of_bounds = df[~df['popularity'].between(0, 100)]
     check_2 = len(out_of_bounds) == 0
     if not check_2:
@@ -33,7 +31,6 @@ def validate_raw_data():
     else:
         print("✅ PASS: 'popularity' is between 0 and 100.")
         
-    # If any check fails, exit with a status of 1 to tell Airflow to halt the pipeline
     if not (check_1 and check_2):
         print("\n🚨 DATA CONTRACT VIOLATED. Halting pipeline to prevent database corruption.")
         sys.exit(1)

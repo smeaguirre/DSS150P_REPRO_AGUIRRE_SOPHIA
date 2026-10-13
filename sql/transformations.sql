@@ -1,7 +1,3 @@
--- sql/transformations.sql
--- Idempotent transformations for Staging and Curated layers
-
--- 1. Create Staging Table from Raw Table
 DROP TABLE IF EXISTS staging_spotify_tracks;
 
 CREATE TABLE staging_spotify_tracks AS
@@ -61,7 +57,6 @@ SELECT
 FROM ranked_tracks
 WHERE rn = 1;
 
--- 2. Create Analytical / Curated Table with Categorical Target
 DROP TABLE IF EXISTS curated_spotify_tracks;
 
 CREATE TABLE curated_spotify_tracks AS
