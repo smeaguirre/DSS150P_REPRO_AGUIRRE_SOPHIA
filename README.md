@@ -8,9 +8,14 @@ This repository implements a containerized, deterministic, end-to-end data engin
 * **Dataset-Level Lineage Diagram:** `docs/lineage.png`
 * **Operational Runbook:** `docs/runbook.md`
 * **Reproducibility & Reflection Report:** `docs/reproducibility_report.md`
+* **Source Profile & Schema:** `metadata/source_profile.md`
+- **Source Manifest (SHA-256):** `metadata/source_manifest.yml`
+- **Data Contract:** `metadata/data_contract.yml`
+- **Storage Benchmark Report:** `docs/benchmark_report.md`
+- **Data Quality Failure Evidence:** `docs/data_quality_fail.png` and `outputs/failure_injection_evidence.json`
 
 ### Data Layer Semantics
-1. **Source (`data/source/dataset.csv`):** Immutable raw CSV input (114,000 rows) verified via SHA-256 against `config/source_manifest.yml`.
+1. **Source (`data/source/dataset.csv`):** Immutable raw CSV input (114,000 rows) verified via SHA-256 against `metadata/source_manifest.yml`.
 2. **Raw (`data/raw/raw_spotify_data.parquet`):** Parquet ingestion layer with audit metadata (`_etl_loaded_at`, `_ingest_mode`) and watermark checkpointing (`metadata/ingest_watermark.json`).
 3. **Quarantine (`data/quarantine/quarantined_rows.parquet`):** Automated isolation of malformed or incomplete source records during raw validation.
 4. **Staging (`data/staging/staging_spotify_tracks.parquet`):** Cleaned and deduplicated dataset (89,740 unique `track_id` rows) with `_staged_at` and `_staging_row_id`.
@@ -25,7 +30,7 @@ This repository implements a containerized, deterministic, end-to-end data engin
 ### Step-by-Step Setup from a Clean Clone
 1. **Clone the repository:**
 ```bash
-git clone [https://github.com/smeaguirre/DSS150P_REPRO_AGUIRRE_SOPHIA.git](https://github.com/smeaguirre/DSS150P_REPRO_AGUIRRE_SOPHIA.git)
+git clone https://github.com/smeaguirre/DSS150P_REPRO_AGUIRRE_SOPHIA.git
 cd DSS150P_REPRO_AGUIRRE_SOPHIA
 ```
 2. **Configure environment variables:**
@@ -72,7 +77,7 @@ docker compose exec airflow-scheduler python -m src.validate --stage raw --injec
 ```
 * **Run Storage Format Benchmark & Partition Workflow:**
 ```bash
-docker compose exec -e POSTGRES_HOST=postgres airflow-scheduler python -m src.storage benchmark
+docker compose exec -e POSTGRES_HOST=postgres airflow-scheduler python -m src.cli benchmark
 ```
 
 ## 6. Attribution

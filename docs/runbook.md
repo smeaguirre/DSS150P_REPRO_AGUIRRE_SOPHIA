@@ -5,7 +5,7 @@
 ```bash
 docker compose ps
 ```
-2. Verify that `data/source/dataset.csv` is present and matches the SHA-256 hash in `config/source_manifest.yml`.
+2. Verify that `data/source/dataset.csv` is present and matches the SHA-256 hash in `metadata/source_manifest.yml`.
 3. Trigger the `predictive_repro_pipeline` DAG in the Airflow Web UI (`http://localhost:8081`) or execute `python -m src.cli all` inside the `airflow-scheduler` container.
 4. Confirm completion by inspecting `outputs/reproducibility_check.json` (`"passed": true`) and `outputs/final_release/manifest.json` (`"status": "SUCCESS"`).
 
@@ -13,7 +13,7 @@ docker compose ps
 
 | Failure Scenario | Task / Module | Root Cause | Diagnostic / Resolution |
 | :--- | :--- | :--- | :--- |
-| **Source Checksum Mismatch** | `ingest_source` (`src.ingest`) | `data/source/dataset.csv` was modified, corrupted, or replaced with a different version. | Restore the authoritative `dataset.csv` matching `config/source_manifest.yml`. |
+| **Source Checksum Mismatch** | `ingest_source` (`src.ingest`) | `data/source/dataset.csv` was modified, corrupted, or replaced with a different version. | Restore the authoritative `dataset.csv` matching `metadata/source_manifest.yml`. |
 | **Data Quality Assertion Failure** | `validate_raw` / `validate_curated` (`src.validate`) | Missing columns, null values in required columns, out-of-range audio features, or duplicate `track_id` rows. | Check `outputs/structured_pipeline_logs.jsonl` for the exact `[Assertion X]` error. Fix source/upstream transform and rerun. |
 | **PostgreSQL Connection Refused** | `load_postgres` / `train_model` | `POSTGRES_HOST` set to `localhost` instead of `postgres` inside container, or `postgres` container not healthy. | Set `POSTGRES_HOST=postgres` in `.env`, run `docker compose up -d`, and retry the task. |
 | **Outdated Table Schema Error** | `load_postgres` (`src.storage`) | Existing `curated_spotify_tracks` table lacks `track_id PRIMARY KEY` or `split` column. | Run one-time schema rebuild: `docker compose exec -e POSTGRES_HOST=postgres airflow-scheduler python -m src.storage --full-refresh`. |

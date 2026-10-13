@@ -25,7 +25,7 @@ This study re-engineered an exploratory multiclass Spotify track popularity pred
 The prior workflow relied on manual, interactive execution without pinned library versions (`xgboost` and `scikit-learn` were unpinned), hardcoded local file paths and credentials, lacked source dataset SHA-256 verification, re-created train/test splits independently across scripts without deterministic row sorting, and appended records into PostgreSQL without a primary key (`if_exists='append'`), causing duplicate-row data leakage and shifting accuracy scores across runs.
 
 ### 2. Which artifact is the true authoritative source: the original file, the raw ingested copy, the curated dataset, or the model-ready dataset? Explain the role of each.
-* **True Authoritative Source — Original File (`data/source/dataset.csv`):** The immutable external ground truth verified by SHA-256 in `config/source_manifest.yml`. All downstream layers can be deterministically reconstructed from it.
+* **True Authoritative Source — Original File (`data/source/dataset.csv`):** The immutable external ground truth verified by SHA-256 in `metadata/source_manifest.yml`. All downstream layers can be deterministically reconstructed from it.
 * **Raw Ingested Copy (`data/raw/raw_spotify_data.parquet`):** Preserves the exact source records in a fast columnar format while appending ingestion audit metadata (`_etl_loaded_at`, `_ingest_mode`) to track lineage.
 * **Staging Dataset (`data/staging/staging_spotify_tracks.parquet`):** Enforces structural hygiene by removing null text records and deduplicating tracks to one canonical row per `track_id` (89,740 rows).
 * **Curated / Model-Ready Dataset (`data/curated/curated_full.parquet` & PostgreSQL `curated_spotify_tracks`):** Encapsulates feature engineering (`scaled_*` audio features fit on train only), target discretization (`popularity_tier`), and the authoritative `split` assignment (`train` vs. `test`) consumed by training and evaluation.
@@ -64,7 +64,7 @@ We eliminated split nondeterminism (`random_state=42`), PostgreSQL heap-order no
 
 ### 12. If the reproduced metric differs from the original, how can you determine whether the cause is data, preprocessing, split logic, dependencies, model parameters, or nondeterministic execution?
 We isolate the cause systematically through our pipeline's layered checkpoints:
-1. **Data:** Compare the SHA-256 of `dataset.csv` against `config/source_manifest.yml`.
+1. **Data:** Compare the SHA-256 of `dataset.csv` against `metadata/source_manifest.yml`.
 2. **Preprocessing & Split Logic:** Compare `train_checksum`, `test_checksum`, and `counts` in `metadata/split_manifest.json` and `train_track_ids_sha256` in `training_config.json`.
 3. **Dependencies & Model Parameters:** Inspect `xgboost_version`, `pandas_version`, `random_state`, and `xgboost_params` recorded in `outputs/model/training_config.json`.
 4. **Nondeterministic Execution:** Run `src/reproducibility_check.py`, which re-scores the saved model on the live test split (`live_audit`). If `live_audit` passes (`diff == 0.0`) on repeated runs with the same artifacts, execution is deterministic and any deviation stems from an upstream layer above.
