@@ -1,31 +1,31 @@
 {
-  "timestamp_utc": "2026-10-13T05:28:30.899637+00:00",
+  "timestamp_utc": "2026-10-13T06:46:26.420608+00:00",
   "results": [
     {
       "Format": "CSV",
       "Logical_Rows": 89740,
       "Size_MB": 41.24,
-      "Write_Sec": 13.9639,
-      "Read_Sec": 1.9048
+      "Write_Sec": 11.6591,
+      "Read_Sec": 1.7373
     },
     {
       "Format": "JSON",
       "Logical_Rows": 89740,
       "Size_MB": 81.46,
-      "Write_Sec": 1.9974,
-      "Read_Sec": 3.4061
+      "Write_Sec": 2.4641,
+      "Read_Sec": 14.854
     },
     {
       "Format": "Parquet",
       "Logical_Rows": 89740,
       "Size_MB": 10.27,
-      "Write_Sec": 1.3014,
-      "Read_Sec": 0.5775
+      "Write_Sec": 0.8561,
+      "Read_Sec": 0.9249
     },
     {
       "Format": "PostgreSQL",
       "Logical_Rows": 89740,
-      "Size_MB": 104.78,
+      "Size_MB": 104.8,
       "Write_Sec": 3.42,
       "Read_Sec": 0.64
     }

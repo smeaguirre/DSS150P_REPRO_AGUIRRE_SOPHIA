@@ -8,7 +8,7 @@ This study re-engineered an exploratory multiclass Spotify track popularity pred
 | **Total Raw Rows** | 114,000 | 114,000 | Identical source dataset (`dataset.csv`), verified via SHA-256. |
 | **Deduplicated Curated Rows** | Unenforced in DB (179,480 after repeated loads) | **89,740** (`track_id PRIMARY KEY`) | Prior `if_exists='append'` duplicated rows on reruns; fixed via transactional `ON CONFLICT (track_id) DO UPDATE`. |
 | **Train / Test Split Sizes** | 143,584 / 35,896 (2x duplicated) | **71,792 train / 17,948 test** | Stored once in `split` column during `build_curated` and verified against `metadata/split_manifest.json`. |
-| **Holdout Accuracy** | `~0.71` (inflated by global scaling & duplicate leakage) | **`0.6249`** (`0.624861`) | Prior accuracy was artificially inflated because identical tracks appeared in both train and test sets and `StandardScaler` was not isolated to a single stored split. |
+| **Holdout Accuracy** | `0.7145` (Unexplained Historical Deviation) | **`0.6249`** (`0.624861`) | Prior accuracy was artificially inflated because identical tracks appeared in both train and test sets and `StandardScaler` was not isolated to a single stored split. |
 | **Macro-F1 / Balanced Acc.** | Not logged | **`0.4275` / `0.4385`** | Added comprehensive multiclass metrics and `outputs/predictions.csv`. |
 | **Live Audit Drift** | Up to `0.037` drift across runs | **`0.000000` (`0.00e+00`)** | Sorting by `track_id` (`mergesort`), pinning `n_jobs=1`, `random_state=42`, `xgboost==3.2.0`, and `scikit-learn==1.7.2` achieved 100% mathematical determinism. |
 

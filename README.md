@@ -94,3 +94,6 @@ docker compose exec -e POSTGRES_HOST=postgres airflow-scheduler python -m src.cl
 
 ## 6. Attribution
 This pipeline re-engineers the exploratory Spotify Track Popularity classification study into a deterministic, production-grade data engineering architecture for DSS150P.
+
+## 8. Academic Integrity & AI Use Acknowledgment
+In accordance with the DSS150P syllabus policy, AI assistance was used for code review, debugging duplicate-row data leakage, and designing the automated ablation study. All code, SQL queries, data contracts, ablation regimes, and tests were executed and verified by the author.

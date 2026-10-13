@@ -1,7 +1,7 @@
 {
     "project": "Spotify Track Popularity Reproducibility Pipeline",
     "status": "SUCCESS",
-    "published_at_utc": "2026-10-13T05:28:53.857464+00:00",
+    "published_at_utc": "2026-10-13T06:47:38.380119+00:00",
     "pipeline_run_id": null,
     "pipeline_version": "1.0.0",
     "summary": {
@@ -20,13 +20,13 @@
         },
         "training_config": {
             "file": "training_config.json",
-            "sha256": "f56f5d3fc4c97e7d0c3f0cb8fe93ae214de0669880eeac52ac4a8c04d7618620",
-            "bytes": 741
+            "sha256": "6d53ba1958e77471a423956056538154dbe39f620773212c07583380eda535d1",
+            "bytes": 710
         },
         "metrics": {
             "file": "metrics.json",
-            "sha256": "7981b74770259e356c78ea9cf8fb91563f9b8dd5e72fafa4f9767be77077f9bd",
-            "bytes": 1302
+            "sha256": "08314ddbdb2fd0091e9718694dca2d02014fc8414f0785d290063145dd48b6a1",
+            "bytes": 1271
         },
         "predictions": {
             "file": "predictions.csv",
@@ -35,18 +35,18 @@
         },
         "reproducibility_report": {
             "file": "reproducibility_check.json",
-            "sha256": "d955c9245d8085d4b606a5098a717d18e77d094c5ba31345cfb68311939577e5",
-            "bytes": 1103
+            "sha256": "29c82085e370e0af204b64dc89234060f6d2f9043ead0a50429664ea8da9260b",
+            "bytes": 572
         },
         "split_manifest": {
             "file": "split_manifest.json",
-            "sha256": "654ac4080ea917fd08d5e3e1aaa94a0bae26dbadb94cec75484f097a9d20dcb7",
+            "sha256": "d96fcf415b669c1545c05cac8a1dd7dd79a90c4f8b672dd918e67280565492b4",
             "bytes": 1216
         },
         "expected_metrics": {
             "file": "expected_metrics.json",
-            "sha256": "a5f419c2a1da709cce8de08a386bb9c6403a8536f062a446a940ca3f9dcc41f3",
-            "bytes": 990
+            "sha256": "48f5080c99ad7cae14a6a2101648453c48394e833eaa2128d7eaef075e1a479d",
+            "bytes": 1023
         }
     }
 }

@@ -1,20 +1,33 @@
 {
-  "timestamp_utc": "2026-10-13T05:45:02.847104+00:00",
+  "timestamp_utc": "2026-10-13T06:45:27.759830+00:00",
   "regimes": {
     "1_historical_notebook_leakage_regime": {
       "total_rows": 114000,
+      "train_rows": 91200,
+      "test_rows": 22800,
       "leaked_overlapping_track_ids_in_test": 6327,
-      "ablation_accuracy": 0.622675,
-      "historical_reported_accuracy": 0.7145,
-      "explanation": "REPRODUCED HISTORICAL FLAW: Applying StandardScaler to the entire dataset BEFORE splitting, combined with 24k cross-genre duplicate rows, artificially inflated accuracy to ~0.71 due to massive data leakage."
+      "ablation_accuracy": 0.622632,
+      "historical_reported_accuracy": 0.7145
     },
     "2_engineered_deduplicated_pipeline": {
       "total_rows": 89740,
       "train_rows": 71792,
       "test_rows": 17948,
       "leaked_overlapping_track_ids_in_test": 0,
-      "reproduced_accuracy": 0.624861,
-      "explanation": "True leakage-free holdout accuracy after deduplicating track_id and strictly fitting StandardScaler on the train split only."
+      "reproduced_accuracy": 0.624861
+    },
+    "3_unexplained_deviation_conclusion": {
+      "outcome_classification": "Unexplained Baseline Deviation \u2014 Instructor Approval Requested",
+      "finding": "The historical 0.7145 accuracy could not be mathematically reproduced. Because XGBoost is a tree-based ensemble, it is mathematically invariant to monotonic feature scaling, meaning global scaling leakage did not artificially inflate the tree's accuracy. Furthermore, leaving all 6327 duplicated rows in the dataset only shifted accuracy to 0.6226.",
+      "factors_ruled_out": [
+        "Train/Test row leakage",
+        "Global feature scaling leakage",
+        "Default hyperparameters"
+      ],
+      "probable_historical_causes": [
+        "Different target tier thresholds (e.g., High > 50 instead of 67)",
+        "Different metric reported (e.g., Micro-F1 instead of Accuracy)"
+      ]
     }
   }
 }
