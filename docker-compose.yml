@@ -25,6 +25,7 @@ x-airflow-common:
     - ./outputs:/opt/airflow/outputs
     - ./tests:/opt/airflow/tests
     - ./pytest.ini:/opt/airflow/pytest.ini
+    - ./docs:/opt/airflow/docs
 
   depends_on:
     postgres:
