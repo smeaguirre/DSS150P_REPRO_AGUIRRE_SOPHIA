@@ -24,12 +24,12 @@ def score_test_split(model, X_test, y_test):
         "weighted_f1": float(f1_score(y_test, y_pred, average="weighted")),
     }
 
-def run_evaluation():
+def run_evaluation(engine=None):
     config = load_config()
     model_dir = config["paths"]["model_dir"]
 
     print("Fetching the TEST split from PostgreSQL...")
-    test_df = read_split("test", get_db_engine())
+    test_df = read_split("test", engine or get_db_engine())
 
     expected = expected_split_size("test", config)
     if expected is not None and len(test_df) != expected:
