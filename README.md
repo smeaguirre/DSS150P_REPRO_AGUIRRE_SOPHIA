@@ -80,7 +80,7 @@ docker compose exec -e POSTGRES_HOST=postgres airflow-scheduler python -m src.pu
 ```
 
 ## 5. Testing, Data Quality & Storage Benchmark
-* **Run the 19 Unit & Integration Tests (against PostgreSQL):**
+* **Run the 25 Unit & Integration Tests (against PostgreSQL):**
 ```bash
 docker compose exec -e TEST_DATABASE_URL="postgresql+psycopg2://airflow:airflow@postgres:5432/airflow" airflow-scheduler python -m pytest -v
 docker compose exec -e POSTGRES_HOST=postgres airflow-scheduler python -m src.storage
@@ -105,7 +105,7 @@ In accordance with the DSS150P syllabus policy, AI assistance was used for code 
 
 
 ## Expected Results & Troubleshooting
-* **Expected Metrics:** Multiclass Accuracy ~0.625 (tolerance 0.05 vs historical 0.643). Macro-F1 ~0.43.
+* **Expected Metrics:** Multiclass Accuracy ~0.646 (Random Forest, tolerance 0.01 vs historical 0.643). Macro-F1 ~0.46. XGBoost comparison track: ~0.625.
 * **Expected Row Counts:** 114,000 raw -> 89,740 curated -> 71,792 train / 17,948 test.
 * **Verification:** Run `python -m src.ingest --verify-only` to check the dataset checksum.
 * **Troubleshooting:** If ingestion fails, clear `data/raw/` and reset `metadata/ingest_watermark.json`. See `docs/runbook.md` for full recovery steps.
