@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import pytest
 from sqlalchemy import create_engine, text
+from sqlalchemy.engine.url import make_url
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
