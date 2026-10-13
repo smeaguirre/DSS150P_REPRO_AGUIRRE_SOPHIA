@@ -25,9 +25,8 @@
     },
     "historical_notebook_comparison": {
         "historical_notebook_accuracy": 0.7145,
-        "ablation_2x_append_accuracy": 0.634973,
-        "ablation_114k_undeduplicated_accuracy": 0.622632,
-        "engineered_deduplicated_accuracy": 0.6248607087140629,
-        "outcome_classification": "Explained Material Deviation \u2014 Data Leakage Removed (See outputs/ablation_study.json)"
+        "ablation_leakage_regime_accuracy": 0.622675,
+        "engineered_deduplicated_accuracy": 0.624861,
+        "outcome_classification": "Explained Material Deviation \u2014 Target/Scaling Leakage Removed"
     }
 }

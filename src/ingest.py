@@ -116,6 +116,8 @@ def run_ingestion(mode: str = "full", force: bool = False) -> dict:
             wm = json.load(f)
 
     if force or not wm or wm.get("mode") != "incremental":
+        if wm.get("mode") == "full" and not force:
+            raise ValueError("Existing full mode watermark found. Run with --force to restart incremental ingestion.")
         last_row = 0
         batches_done = 0
     else:

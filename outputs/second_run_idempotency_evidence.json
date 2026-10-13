@@ -1,12 +1,9 @@
 {
-  "timestamp_utc": "2026-10-13T05:28:03.621384+00:00",
+  "timestamp_utc": "2026-10-13T05:45:28.642848+00:00",
   "table_name": "curated_spotify_tracks",
-  "before_second_run_rows": 89740,
-  "before_second_run_distinct_track_ids": 89740,
-  "after_second_run_rows": 89740,
-  "after_second_run_distinct_track_ids": 89740,
+  "before_load_rows": 89740,
+  "after_second_load_rows": 89740,
+  "after_second_load_distinct_track_ids": 89740,
   "duplicate_business_keys_introduced": 0,
-  "net_row_delta": 0,
-  "postgres_table_size_mb": 104.78,
   "idempotent_verified": true
 }
