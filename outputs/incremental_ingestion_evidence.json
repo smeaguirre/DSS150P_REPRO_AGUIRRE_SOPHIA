@@ -1,13 +1,13 @@
 {
-  "timestamp_utc": "2026-10-13T06:45:22.094264+00:00",
+  "timestamp_utc": "2026-10-13T06:59:40.737753+00:00",
   "batches": [
     {
-      "timestamp": "2026-10-13T06:45:16.305597+00:00",
+      "timestamp": "2026-10-13T06:59:34.298834+00:00",
       "pipeline_run_id": "local_run",
       "stage": "ingest_source",
       "status": "SUCCESS",
       "row_count": 38000,
-      "duration_sec": 1.8348,
+      "duration_sec": 2.1321,
       "error": null,
       "details": {
         "mode": "incremental",
@@ -17,12 +17,12 @@
       }
     },
     {
-      "timestamp": "2026-10-13T06:45:18.439545+00:00",
+      "timestamp": "2026-10-13T06:59:36.802429+00:00",
       "pipeline_run_id": "local_run",
       "stage": "ingest_source",
       "status": "SUCCESS",
       "row_count": 76000,
-      "duration_sec": 2.1095,
+      "duration_sec": 2.4775,
       "error": null,
       "details": {
         "mode": "incremental",
@@ -32,12 +32,12 @@
       }
     },
     {
-      "timestamp": "2026-10-13T06:45:20.403431+00:00",
+      "timestamp": "2026-10-13T06:59:39.014412+00:00",
       "pipeline_run_id": "local_run",
       "stage": "ingest_source",
       "status": "SUCCESS",
       "row_count": 114000,
-      "duration_sec": 1.9273,
+      "duration_sec": 2.1642,
       "error": null,
       "details": {
         "mode": "incremental",
@@ -47,12 +47,12 @@
       }
     },
     {
-      "timestamp": "2026-10-13T06:45:22.060081+00:00",
+      "timestamp": "2026-10-13T06:59:40.708203+00:00",
       "pipeline_run_id": "local_run",
       "stage": "ingest_source",
       "status": "SKIPPED_UP_TO_DATE",
       "row_count": 114000,
-      "duration_sec": 1.6132,
+      "duration_sec": 1.6637,
       "error": null,
       "details": {
         "mode": "incremental",

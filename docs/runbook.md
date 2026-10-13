@@ -39,3 +39,6 @@ docker compose exec -e POSTGRES_HOST=postgres airflow-scheduler bash -c "python 
 ## 6. Failure Injection & Recovery Demonstration (A13 / A14)
 1. **Inject Fault:** Run `docker compose exec airflow-scheduler python -m src.validate --stage raw --inject-failure`. This drops the required `danceability` column on an in-memory copy, triggers `[Assertion 1 - Schema]`, writes `outputs/failure_injection_evidence.json`, logs a `FAILED` entry in `outputs/structured_pipeline_logs.jsonl`, and exits with code `1` so bad data never reaches staging, curated, or model outputs.
 2. **Recover:** Run `docker compose exec airflow-scheduler python -m src.validate --stage raw` (without `--inject-failure`). Validation passes all 5 assertions and updates `outputs/pipeline_run_summary.json`.
+
+## 7. Automated Evidence Generation
+Running `python -m src.cli evidence` will regenerate all JSON evidence artifacts. **Note:** This command runs the incremental ingestion trace, which overwrites `data/raw/raw_spotify_data.parquet` and `metadata/ingest_watermark.json` as a side effect.
