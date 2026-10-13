@@ -26,3 +26,7 @@ outputs/model/*.json
 outputs/metrics.json
 outputs/predictions.csv
 !outputs/incremental_ingestion_evidence.json
+!evidence/
+!evidence/**
+!sample_outputs/
+!sample_outputs/**
