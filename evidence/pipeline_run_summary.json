@@ -1,0 +1,15 @@
+{
+  "pipeline_run_id": "local_run",
+  "start_time_utc": "2026-10-13T11:22:45.473802+00:00",
+  "end_time_utc": "2026-10-13T16:33:08.907628+00:00",
+  "last_validated_stage": "validate_raw",
+  "status": "SUCCESS",
+  "counts": {
+    "raw": 114000,
+    "staging": 89740,
+    "curated": 89740,
+    "train": 71792,
+    "test": 17948,
+    "predictions": 17948
+  }
+}

@@ -1,0 +1,56 @@
+{
+    "model_type": "RandomForest",
+    "sklearn_version": "1.7.2",
+    "primary_metric": "accuracy",
+    "accuracy": 0.6462001337196345,
+    "balanced_accuracy": 0.46023557731380177,
+    "macro_f1": 0.45619674020375006,
+    "weighted_f1": 0.6325750811211646,
+    "per_class": {
+        "High": {
+            "precision": 0.21568627450980393,
+            "recall": 0.024336283185840708,
+            "f1-score": 0.0437375745526839,
+            "support": 904.0
+        },
+        "Low": {
+            "precision": 0.6763659877141933,
+            "recall": 0.6948627103631533,
+            "f1-score": 0.685489596417454,
+            "support": 9032.0
+        },
+        "Mid": {
+            "precision": 0.6186529707015291,
+            "recall": 0.6615077383924114,
+            "f1-score": 0.6393630496411122,
+            "support": 8012.0
+        }
+    },
+    "labels": [
+        "High",
+        "Low",
+        "Mid"
+    ],
+    "confusion_matrix": [
+        [
+            22,
+            334,
+            548
+        ],
+        [
+            37,
+            6276,
+            2719
+        ],
+        [
+            43,
+            2669,
+            5300
+        ]
+    ],
+    "test_samples": 17948,
+    "train_samples": 71792,
+    "random_state": 42,
+    "xgboost_version": "3.2.0",
+    "pipeline_run_id": null
+}

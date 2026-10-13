@@ -1,0 +1,65 @@
+{
+  "timestamp_utc": "2026-10-13T16:27:03.202204+00:00",
+  "batches": [
+    {
+      "timestamp": "2026-10-13T16:26:59.666475+00:00",
+      "pipeline_run_id": "local_run",
+      "stage": "ingest_source",
+      "status": "SUCCESS",
+      "row_count": 38000,
+      "duration_sec": 0.8806,
+      "error": null,
+      "details": {
+        "mode": "incremental",
+        "batch": "1/3",
+        "rows_added": 38000,
+        "cumulative_rows": 38000
+      }
+    },
+    {
+      "timestamp": "2026-10-13T16:27:00.831168+00:00",
+      "pipeline_run_id": "local_run",
+      "stage": "ingest_source",
+      "status": "SUCCESS",
+      "row_count": 76000,
+      "duration_sec": 1.149,
+      "error": null,
+      "details": {
+        "mode": "incremental",
+        "batch": "2/3",
+        "rows_added": 38000,
+        "cumulative_rows": 76000
+      }
+    },
+    {
+      "timestamp": "2026-10-13T16:27:02.189449+00:00",
+      "pipeline_run_id": "local_run",
+      "stage": "ingest_source",
+      "status": "SUCCESS",
+      "row_count": 114000,
+      "duration_sec": 1.3354,
+      "error": null,
+      "details": {
+        "mode": "incremental",
+        "batch": "3/3",
+        "rows_added": 38000,
+        "cumulative_rows": 114000
+      }
+    },
+    {
+      "timestamp": "2026-10-13T16:27:03.174504+00:00",
+      "pipeline_run_id": "local_run",
+      "stage": "ingest_source",
+      "status": "SKIPPED_UP_TO_DATE",
+      "row_count": 114000,
+      "duration_sec": 0.9588,
+      "error": null,
+      "details": {
+        "mode": "incremental",
+        "batch": "3/3",
+        "watermark_row": 114000,
+        "source_checksum": "b202fa49909b2d5cef71a04b1d21243cfeb36414535f2ca9272aa646721177bd"
+      }
+    }
+  ]
+}

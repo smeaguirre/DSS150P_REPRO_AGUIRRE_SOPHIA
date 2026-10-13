@@ -1,0 +1,43 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.22, pytest-7.4.4, pluggy-1.3.0 -- /opt/hostedtoolcache/Python/3.10.22/x64/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/work/DSS150P_REPRO_AGUIRRE_SOPHIA/DSS150P_REPRO_AGUIRRE_SOPHIA
+configfile: pytest.ini
+testpaths: tests
+plugins: anyio-4.2.0, time-machine-2.13.0
+collecting ... collected 25 items
+
+tests/test_audit_and_publish.py::test_audit_passes_when_artifacts_and_baseline_agree PASSED [  4%]
+tests/test_audit_and_publish.py::test_audit_detects_tampered_metrics_file PASSED [  8%]
+tests/test_audit_and_publish.py::test_audit_fails_when_result_differs_from_baseline PASSED [ 12%]
+tests/test_audit_and_publish.py::test_audit_errors_while_baseline_is_unset PASSED [ 16%]
+tests/test_audit_and_publish.py::test_publish_refuses_without_or_with_failed_audit PASSED [ 20%]
+tests/test_audit_and_publish.py::test_publish_builds_verifiable_bundle_and_is_rerun_safe PASSED [ 24%]
+tests/test_ingest_validate_dag.py::test_incremental_ingestion_runs_three_batches_and_is_idempotent PASSED [ 28%]
+tests/test_ingest_validate_dag.py::test_ingest_full_guard_raises_error PASSED [ 32%]
+tests/test_ingest_validate_dag.py::test_source_manifest_detects_checksum_or_row_mismatch PASSED [ 36%]
+tests/test_ingest_validate_dag.py::test_validate_enforces_all_five_contract_assertions_and_failure_injection PASSED [ 40%]
+tests/test_ingest_validate_dag.py::test_airflow_dag_has_ten_bash_operators_and_no_empty_operators PASSED [ 44%]
+tests/test_storage_and_model.py::test_load_is_rerun_safe_and_matches_curated_file PASSED [ 48%]
+tests/test_storage_and_model.py::test_reload_updates_changed_rows_and_removes_stale_rows PASSED [ 52%]
+tests/test_storage_and_model.py::test_outdated_table_schema_is_rejected_with_clear_message PASSED [ 56%]
+tests/test_storage_and_model.py::test_read_split_sizes_match_manifest PASSED [ 60%]
+tests/test_storage_and_model.py::test_train_evaluate_end_to_end_is_deterministic PASSED [ 64%]
+tests/test_storage_and_model.py::test_evaluate_detects_database_out_of_sync_with_manifest PASSED [ 68%]
+tests/test_storage_and_model.py::test_reproducibility_check_pass_fail_and_pending PASSED [ 72%]
+tests/test_storage_and_model.py::test_random_forest_track_trains_and_evaluates PASSED [ 76%]
+tests/test_transform.py::test_discretize_popularity_boundaries PASSED    [ 80%]
+tests/test_transform.py::test_build_curated_split_has_no_overlap_and_is_sorted PASSED [ 84%]
+tests/test_transform.py::test_scaler_is_fit_on_train_only PASSED         [ 88%]
+tests/test_transform.py::test_build_curated_is_deterministic PASSED      [ 92%]
+tests/test_transform.py::test_build_curated_rejects_duplicate_track_ids PASSED [ 96%]
+tests/test_transform.py::test_seed_env_override_changes_split PASSED     [100%]
+
+=============================== warnings summary ===============================
+tests/test_audit_and_publish.py: 66 warnings
+tests/test_storage_and_model.py: 18 warnings
+  /opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/sklearn/metrics/_classification.py:1731: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+    _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================= 25 passed, 84 warnings in 6.71s ========================

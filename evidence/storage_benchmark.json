@@ -1,0 +1,34 @@
+{
+  "results": [
+    {
+      "Format": "CSV",
+      "Size_MB": 49.46,
+      "Write_Sec": 3.9122,
+      "Read_Sec": 1.0769
+    },
+    {
+      "Format": "JSON",
+      "Size_MB": 95.76,
+      "Write_Sec": 2.3693,
+      "Read_Sec": 3.55
+    },
+    {
+      "Format": "Parquet",
+      "Size_MB": 10.81,
+      "Write_Sec": 0.5965,
+      "Read_Sec": 0.3249
+    },
+    {
+      "Format": "PostgreSQL (Warm)",
+      "Size_MB": 42.03,
+      "Write_Sec": 25.2525,
+      "Read_Sec": 5.0976
+    },
+    {
+      "Format": "PostgreSQL (Filtered High)",
+      "Size_MB": 42.03,
+      "Write_Sec": 25.2525,
+      "Read_Sec": 0.2013
+    }
+  ]
+}
