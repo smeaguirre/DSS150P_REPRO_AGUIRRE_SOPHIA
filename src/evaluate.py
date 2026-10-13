@@ -14,6 +14,16 @@ from src.config import (
 )
 from src.storage import read_split
 
+def score_test_split(model, X_test, y_test):
+    """Evaluate model on test split and return metrics dictionary for testing/audit."""
+    y_pred = model.predict(X_test)
+    return {
+        "accuracy": float(accuracy_score(y_test, y_pred)),
+        "balanced_accuracy": float(balanced_accuracy_score(y_test, y_pred)),
+        "macro_f1": float(f1_score(y_test, y_pred, average="macro")),
+        "weighted_f1": float(f1_score(y_test, y_pred, average="weighted")),
+    }
+
 def run_evaluation():
     config = load_config()
     model_dir = config["paths"]["model_dir"]

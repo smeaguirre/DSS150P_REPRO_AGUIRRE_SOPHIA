@@ -100,7 +100,7 @@ def test_validate_enforces_all_five_contract_assertions_and_failure_injection(is
     assert res_cur["details"]["assertions_verified"] == 5
 
 def test_airflow_dag_has_ten_bash_operators_and_no_empty_operators():
-    pytest.importorskip('airflow')_and_no_empty_operators():
+    pytest.importorskip('airflow')
     dagbag = DagBag(dag_folder=os.path.join(REPO_ROOT, "dags"), include_examples=False)
     dag = dagbag.get_dag("predictive_repro_pipeline")
     assert dag is not None
