@@ -111,11 +111,33 @@ with DAG(
         }
     )
     
-    # 9. Reproducibility Check (Placeholder for Milestone 09)
-    reproducibility_check = EmptyOperator(task_id='reproducibility_check')
+    # 9. Reproducibility Check
+    reproducibility_check = BashOperator(
+        task_id='reproducibility_check',
+        bash_command='cd /opt/airflow && python src/reproducibility_check.py',
+        on_failure_callback=log_failure_callback,
+        env={
+            "PIPELINE_RUN_ID": "{{ run_id }}",
+            "POSTGRES_HOST": "postgres",
+            "POSTGRES_USER": "airflow",
+            "POSTGRES_PASSWORD": "airflow",
+            "POSTGRES_DB": "airflow"
+        }
+    )
 
     # 10. Publish Outputs
-    publish_outputs = EmptyOperator(task_id='publish_outputs')
+    publish_outputs = BashOperator(
+        task_id='publish_outputs',
+        bash_command='cd /opt/airflow && python src/publish.py',
+        on_failure_callback=log_failure_callback,
+        env={
+            "PIPELINE_RUN_ID": "{{ run_id }}",
+            "POSTGRES_HOST": "postgres",
+            "POSTGRES_USER": "airflow",
+            "POSTGRES_PASSWORD": "airflow",
+            "POSTGRES_DB": "airflow"
+        }
+    )
 
     # Define Explicit Dependencies
     ingest_source >> validate_raw >> transform_staging >> build_curated >> load_postgres

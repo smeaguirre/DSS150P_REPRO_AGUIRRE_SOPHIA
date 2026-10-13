@@ -23,8 +23,8 @@ def verify_reproducibility():
         raise FileNotFoundError("❌ Baseline metrics.json not found! Run evaluation first.")
         
     with open(metrics_path, "r") as f:
-        baseline_metrics = json.load(f)
-    baseline_accuracy = baseline_metrics["accuracy"]
+        metrics_data = json.load(f)
+    logged_accuracy = metrics_data["accuracy"]
     
     engine = get_db_engine()
     df = pd.read_sql_table('curated_spotify_tracks', engine)
@@ -45,16 +45,15 @@ def verify_reproducibility():
     model.load_model("data/models/xgboost_model.json")
     
     y_pred = model.predict(X_test)
-    current_accuracy = accuracy_score(y_test, y_pred)
+    live_accuracy = accuracy_score(y_test, y_pred)
     
-    print(f"Baseline Accuracy: {baseline_accuracy:.6f}")
-    print(f"Current Accuracy:  {current_accuracy:.6f}")
+    print(f"Logged Metrics Accuracy: {logged_accuracy:.6f}")
+    print(f"Live Audit Accuracy:     {live_accuracy:.6f}")
     
-    # Allow a minor 1% tolerance window for environment row-ordering variations
-    tolerance = 0.01
-    assert abs(current_accuracy - baseline_accuracy) <= tolerance, "🚨 Reproducibility audit FAILED! Accuracy drifted beyond tolerance."
+    tolerance = 0.005
+    assert abs(live_accuracy - logged_accuracy) <= tolerance, "🚨 Reproducibility audit FAILED! Logged metrics do not match live model execution."
     
-    print("🎉 REPRODUCIBILITY AUDIT PASSED: Model accuracy is within acceptable deterministic limits.")
+    print("🎉 REPRODUCIBILITY AUDIT PASSED: Pipeline artifacts and live model execution are deterministic.")
 
 if __name__ == "__main__":
     verify_reproducibility()
