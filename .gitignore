@@ -31,3 +31,9 @@ Thumbs.db
 outputs/benchmark.*
 outputs/model/*.json
 outputs/incremental_ingestion_evidence.json
+
+outputs/benchmark.*
+outputs/model/*.json
+outputs/incremental_ingestion_evidence.json
+outputs/metrics.json
+outputs/predictions.csv
