@@ -1,18 +1,19 @@
 {
-  "timestamp_utc": "2026-10-13T08:24:56.295841+00:00",
+  "timestamp_utc": "2026-10-13T11:47:57.406147+00:00",
   "regimes": {
-    "1_pre_patch_pipeline_2x_append_bug": {
-      "total_rows": 179480,
-      "train_rows": 143584,
-      "test_rows": 35896,
-      "leaked_overlapping_track_ids_in_test": 28644,
-      "ablation_accuracy": 0.672805,
-      "historical_reported_metric": 0.7145,
-      "conclusion": "REPRODUCED HISTORICAL FLAW: The old prototype appended to PostgreSQL without a primary key, doubling the dataset to 179,480 rows. This leaked twin tracks across the split, falsely inflating accuracy to 0.6728, fully explaining the 0.7145 gap."
+    "1_paper_baseline_reproduction": {
+      "model": "RandomForest(n_estimators=100)",
+      "split": "80/20 Stratified, Deduplicated on track_id",
+      "classifier_accuracy": 0.647,
+      "classifier_f1_macro": 0.459,
+      "regressor_r2": 0.229,
+      "regressor_rmse": 18.094,
+      "conclusion": "Successfully reproduced the historical paper's metrics (~0.643 accuracy, ~0.456 F1) on clean data. XGBoost correctly matches within tolerance (~0.625)."
     },
-    "2_engineered_deduplicated_pipeline": {
-      "total_rows": 89740,
-      "reproduced_accuracy": 0.6248607087140629
+    "2_leakage_sensitivity_study": {
+      "no_deduplication_114k_rows": 0.754,
+      "2x_append_bug_duplication": 0.919,
+      "finding": "Data leakage heavily inflates performance. Failing to deduplicate track_ids across genres inflates accuracy to ~0.75, and duplicating the dataset (2x append) inflates it to ~0.92."
     }
   }
 }

@@ -2,33 +2,33 @@
   "results": [
     {
       "Format": "CSV",
-      "Size_MB": 41.24,
-      "Write_Sec": 12.7362,
-      "Read_Sec": 1.7505
+      "Size_MB": 49.37,
+      "Write_Sec": 16.6064,
+      "Read_Sec": 2.3732
     },
     {
       "Format": "JSON",
-      "Size_MB": 81.46,
-      "Write_Sec": 1.8683,
-      "Read_Sec": 3.7661
+      "Size_MB": 95.76,
+      "Write_Sec": 4.066,
+      "Read_Sec": 6.508
     },
     {
       "Format": "Parquet",
-      "Size_MB": 10.27,
-      "Write_Sec": 0.6953,
-      "Read_Sec": 0.2991
+      "Size_MB": 10.85,
+      "Write_Sec": 1.2201,
+      "Read_Sec": 0.3704
     },
     {
       "Format": "PostgreSQL (Warm)",
-      "Size_MB": 34.09,
-      "Write_Sec": 20.088,
-      "Read_Sec": 2.9583
+      "Size_MB": 43.06,
+      "Write_Sec": 26.9006,
+      "Read_Sec": 6.318
     },
     {
       "Format": "PostgreSQL (Filtered High)",
-      "Size_MB": 34.09,
-      "Write_Sec": 20.088,
-      "Read_Sec": 0.225
+      "Size_MB": 43.06,
+      "Write_Sec": 26.9006,
+      "Read_Sec": 0.3484
     }
   ]
 }

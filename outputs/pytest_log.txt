@@ -5,47 +5,139 @@ rootdir: /opt/airflow
 configfile: pytest.ini
 testpaths: tests
 plugins: anyio-4.2.0, time-machine-2.13.0
-collecting ... collected 13 items / 2 errors
+collecting ... collected 24 items
 
-==================================== ERRORS ====================================
-_______________ ERROR collecting tests/test_audit_and_publish.py _______________
-ImportError while importing test module '/opt/airflow/tests/test_audit_and_publish.py'.
-Hint: make sure your test modules/packages have valid Python names.
-Traceback:
-/usr/local/lib/python3.10/importlib/__init__.py:126: in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-tests/test_audit_and_publish.py:9: in <module>
-    import src.reproducibility_check as audit_mod
-src/reproducibility_check.py:3: in <module>
-    from src.evaluate import score_test_split
-E   ImportError: cannot import name 'score_test_split' from 'src.evaluate' (/opt/airflow/src/evaluate.py)
-______________ ERROR collecting tests/test_ingest_validate_dag.py ______________
-/home/airflow/.local/lib/python3.10/site-packages/_pytest/python.py:617: in _importtestmodule
-    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
-/home/airflow/.local/lib/python3.10/site-packages/_pytest/pathlib.py:567: in import_path
-    importlib.import_module(module_name)
-/usr/local/lib/python3.10/importlib/__init__.py:126: in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-<frozen importlib._bootstrap>:1050: in _gcd_import
-    ???
-<frozen importlib._bootstrap>:1027: in _find_and_load
-    ???
-<frozen importlib._bootstrap>:1006: in _find_and_load_unlocked
-    ???
-<frozen importlib._bootstrap>:688: in _load_unlocked
-    ???
-/home/airflow/.local/lib/python3.10/site-packages/_pytest/assertion/rewrite.py:177: in exec_module
-    source_stat, co = _rewrite_test(fn, self.config)
-/home/airflow/.local/lib/python3.10/site-packages/_pytest/assertion/rewrite.py:359: in _rewrite_test
-    tree = ast.parse(source, filename=strfn)
-/usr/local/lib/python3.10/ast.py:50: in parse
-    return compile(source, filename, mode, flags,
-E     File "/opt/airflow/tests/test_ingest_validate_dag.py", line 103
-E       pytest.importorskip('airflow')_and_no_empty_operators():
-E                                     ^^^^^^^^^^^^^^^^^^^^^^^
-E   SyntaxError: invalid syntax
+tests/test_audit_and_publish.py::test_audit_passes_when_artifacts_and_baseline_agree PASSED [  4%]
+tests/test_audit_and_publish.py::test_audit_detects_tampered_metrics_file FAILED [  8%]
+tests/test_audit_and_publish.py::test_audit_fails_when_result_differs_from_baseline PASSED [ 12%]
+tests/test_audit_and_publish.py::test_audit_errors_while_baseline_is_unset FAILED [ 16%]
+tests/test_audit_and_publish.py::test_publish_refuses_without_or_with_failed_audit PASSED [ 20%]
+tests/test_audit_and_publish.py::test_publish_builds_verifiable_bundle_and_is_rerun_safe PASSED [ 25%]
+tests/test_ingest_validate_dag.py::test_incremental_ingestion_runs_three_batches_and_is_idempotent PASSED [ 29%]
+tests/test_ingest_validate_dag.py::test_ingest_full_guard_raises_error PASSED [ 33%]
+tests/test_ingest_validate_dag.py::test_source_manifest_detects_checksum_or_row_mismatch PASSED [ 37%]
+tests/test_ingest_validate_dag.py::test_validate_enforces_all_five_contract_assertions_and_failure_injection PASSED [ 41%]
+tests/test_ingest_validate_dag.py::test_airflow_dag_has_ten_bash_operators_and_no_empty_operators PASSED [ 45%]
+tests/test_storage_and_model.py::test_load_is_rerun_safe_and_matches_curated_file PASSED [ 50%]
+tests/test_storage_and_model.py::test_reload_updates_changed_rows_and_removes_stale_rows PASSED [ 54%]
+tests/test_storage_and_model.py::test_outdated_table_schema_is_rejected_with_clear_message PASSED [ 58%]
+tests/test_storage_and_model.py::test_read_split_sizes_match_manifest PASSED [ 62%]
+tests/test_storage_and_model.py::test_train_evaluate_end_to_end_is_deterministic PASSED [ 66%]
+tests/test_storage_and_model.py::test_evaluate_detects_database_out_of_sync_with_manifest PASSED [ 70%]
+tests/test_storage_and_model.py::test_reproducibility_check_pass_fail_and_pending PASSED [ 75%]
+tests/test_transform.py::test_discretize_popularity_boundaries PASSED    [ 79%]
+tests/test_transform.py::test_build_curated_split_has_no_overlap_and_is_sorted PASSED [ 83%]
+tests/test_transform.py::test_scaler_is_fit_on_train_only PASSED         [ 87%]
+tests/test_transform.py::test_build_curated_is_deterministic PASSED      [ 91%]
+tests/test_transform.py::test_build_curated_rejects_duplicate_track_ids PASSED [ 95%]
+tests/test_transform.py::test_seed_env_override_changes_split PASSED     [100%]
+
+=================================== FAILURES ===================================
+___________________ test_audit_detects_tampered_metrics_file ___________________
+
+loaded_db = Engine(postgresql+psycopg2://airflow:***@postgres:5432/spotify_test)
+
+>   ???
+E   assert (True is False)
+
+C:\Users\Sofia\Documents\DSS150P_REPRO_AGUIRRE_SOPHIA\tests\test_audit_and_publish.py:35: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+Curated layers built successfully:
+  - Train: data/curated/curated_train.parquet (1200 rows)
+  - Test: data/curated/curated_test.parquet (300 rows)
+  - Manifest written to metadata/split_manifest.json
+Reading curated data from data/curated/curated_full.parquet...
+Staging 1500 records, then upserting into 'curated_spotify_tracks'...
+Database load completed: 1500 rows, 1500 distinct track_id.
+----------------------------- Captured stdout call -----------------------------
+Connecting to PostgreSQL to fetch the TRAIN split...
+Loaded 1200 training rows. Preparing features...
+Training XGBoost Classifier (random_state=42, params={'n_estimators': 100, 'max_depth': 6, 'n_jobs': 1, 'eval_metric': 'mlogloss'})...
+Model + training_config.json saved to outputs/model/
+Fetching the TEST split from PostgreSQL...
+Making predictions on the holdout test set...
+
+=== EVALUATION RESULTS ===
+Accuracy: 0.5100
+              precision    recall  f1-score   support
+
+        High       0.00      0.00      0.00        15
+         Low       0.52      0.58      0.55       150
+         Mid       0.49      0.49      0.49       135
+
+    accuracy                           0.51       300
+   macro avg       0.34      0.36      0.35       300
+weighted avg       0.48      0.51      0.50       300
+
+Metrics saved to outputs/metrics.json; predictions saved to outputs/predictions.csv
+__________________ test_audit_errors_while_baseline_is_unset ___________________
+
+loaded_db = Engine(postgresql+psycopg2://airflow:***@postgres:5432/spotify_test)
+
+>   ???
+
+C:\Users\Sofia\Documents\DSS150P_REPRO_AGUIRRE_SOPHIA\tests\test_audit_and_publish.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def verify_reproducibility():
+        os.makedirs("outputs", exist_ok=True)
+    
+        with open("metadata/expected_metrics.json", "r", encoding="utf-8") as f:
+            exp = json.load(f)
+    
+        exp_acc = exp.get("metrics", {}).get("accuracy", 0.643)
+        tolerance = exp.get("tolerances", {}).get("accuracy", 0.05)
+    
+        with open("outputs/metrics.json", "r", encoding="utf-8") as f:
+            live_metrics = json.load(f)
+    
+        live_acc = live_metrics.get("accuracy", 0.0)
+    
+>       diff = abs(live_acc - exp_acc)
+E       TypeError: unsupported operand type(s) for -: 'float' and 'NoneType'
+
+/opt/airflow/src/reproducibility_check.py:18: TypeError
+---------------------------- Captured stdout setup -----------------------------
+Curated layers built successfully:
+  - Train: data/curated/curated_train.parquet (1200 rows)
+  - Test: data/curated/curated_test.parquet (300 rows)
+  - Manifest written to metadata/split_manifest.json
+Reading curated data from data/curated/curated_full.parquet...
+Staging 1500 records, then upserting into 'curated_spotify_tracks'...
+Database load completed: 1500 rows, 1500 distinct track_id.
+----------------------------- Captured stdout call -----------------------------
+Connecting to PostgreSQL to fetch the TRAIN split...
+Loaded 1200 training rows. Preparing features...
+Training XGBoost Classifier (random_state=42, params={'n_estimators': 100, 'max_depth': 6, 'n_jobs': 1, 'eval_metric': 'mlogloss'})...
+Model + training_config.json saved to outputs/model/
+Fetching the TEST split from PostgreSQL...
+Making predictions on the holdout test set...
+
+=== EVALUATION RESULTS ===
+Accuracy: 0.5100
+              precision    recall  f1-score   support
+
+        High       0.00      0.00      0.00        15
+         Low       0.52      0.58      0.55       150
+         Mid       0.49      0.49      0.49       135
+
+    accuracy                           0.51       300
+   macro avg       0.34      0.36      0.35       300
+weighted avg       0.48      0.51      0.50       300
+
+Metrics saved to outputs/metrics.json; predictions saved to outputs/predictions.csv
+=============================== warnings summary ===============================
+tests/test_audit_and_publish.py: 36 warnings
+tests/test_storage_and_model.py: 12 warnings
+  /home/airflow/.local/lib/python3.10/site-packages/sklearn/metrics/_classification.py:1731: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+    _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+
+tests/test_ingest_validate_dag.py::test_airflow_dag_has_ten_bash_operators_and_no_empty_operators
+  /opt/airflow/dags/predictive_repro_pipeline.py:22: RemovedInAirflow3Warning: Param `schedule_interval` is deprecated and will be removed in a future release. Please use `schedule` instead. 
+    with DAG(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
 =========================== short test summary info ============================
-ERROR tests/test_audit_and_publish.py
-ERROR tests/test_ingest_validate_dag.py
-!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!!
-============================== 2 errors in 2.46s ===============================
+FAILED tests/test_audit_and_publish.py::test_audit_detects_tampered_metrics_file
+FAILED tests/test_audit_and_publish.py::test_audit_errors_while_baseline_is_unset
+================== 2 failed, 22 passed, 49 warnings in 26.60s ==================

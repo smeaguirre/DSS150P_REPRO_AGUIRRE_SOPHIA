@@ -8,7 +8,7 @@
 | **Section** | CM17 |
 | **Previous Predictive Analytics Group / Project Title** | Mood versus Technical Audio Features in Predicting Spotify Track Popularity: An Ablation Study Across 125 Genres |
 | **Dataset Name / Source** | Spotify Tracks Dataset (public dataset available on Kaggle, containing tracks across 125 genres) |
-| **Predictive Task** | Classification |
+| **Predictive Task** | Classification & Regression |
 
 # Spotify Track Popularity — End-to-End Reproducible MLOps Pipeline
 
